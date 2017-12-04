@@ -3,7 +3,7 @@
 use Eddmash\PhpGis\Gdal\DataSource;
 use Eddmash\PhpGis\Gdal\Exceptions\GdalException;
 
-require "vendor/autoload.php";
+require "../vendor/autoload.php";
 /**
  * This file is part of the pgdal package.
  *
