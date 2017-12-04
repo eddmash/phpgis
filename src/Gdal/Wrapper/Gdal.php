@@ -96,6 +96,23 @@ class Gdal
         return OGR_F_GetFieldDefnRef($_ptr, $fli);
     }
 
+
+    public static function getFeatureDefn($_ptr)
+    {
+        return OGR_F_GetDefnRef($_ptr);
+    }
+
+    public static function getFeatureGeometry($featureHandle)
+    {
+        return OGR_F_GetGeometryRef($featureHandle);
+    }
+
+    public static function getFeatureGeomType($_ptrDefn)
+    {
+        return OGR_FD_GetGeomType($_ptrDefn);
+    }
+
+
 // ================================= Field ==================================
 
     public static function getFieldName($_ptr)
@@ -103,6 +120,25 @@ class Gdal
         return OGR_Fld_GetNameRef($_ptr);
     }
 
-
 // ================================= Feature Definition ==================================
+// ================================= GEOMETRY Definition ==================================
+    public static function getGeometryName($geometryHandle)
+    {
+        return OGR_G_GetGeometryName($geometryHandle);
+    }
+
+    public static function getGeometryDimension($geometryPtr)
+    {
+        return OGR_G_GetDimension($geometryPtr);
+    }
+
+    public static function exportToWkt($geometryPtr)
+    {
+        return OGR_G_ExportToWkt($geometryPtr);
+    }
+
+    public static function getSrs($geometryPtr)
+    {
+        return OGR_G_GetSpatialReference($geometryPtr);
+    }
 }

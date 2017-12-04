@@ -205,6 +205,16 @@ function OGR_F_GetFID($featureHandle)
 
 }
 
+function OGR_F_GetDefnRef($featureHandle){
+
+}
+function OGR_FD_GetGeomType($featureDfnHandle){
+
+}
+function OGR_F_GetGeometryRef($featureDfnHandle){
+
+}
+
 /**
  * Fetch definition for this field.
  * @since 1.1.0
@@ -232,5 +242,17 @@ function OGR_Fld_GetNameRef($handle){
 
 }
 
+
+function OGR_G_GetGeometryName($geometryHandle){
+
+}
+
+function OGR_G_GetDimension($geometryHandle){
+
+}
+
+function  OGR_G_ExportToWkt($geometryPtr){}
+
+function  OGR_G_GetSpatialReference($geometryPtr){}
 
 

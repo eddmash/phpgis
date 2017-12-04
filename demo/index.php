@@ -15,11 +15,16 @@ require "../vendor/autoload.php";
 
 try{
 
-    $ds = new DataSource('usa_states/usa_state_shapefile.shp');
+    $ds = new DataSource('KEN_adm/KEN_adm1.shp');
     echo " Datasource <strong>".$ds->getName()."</strong> has <strong>".$ds->getLayerCount()."</strong> layers <br>";
     foreach ($ds as $index => $layer) :
         echo " LAYER ". $layer." FEATURE COUNT ".$layer->getFeatureCount()."<br>";
         foreach ($layer as $feature):
+            echo $feature->getFeatureID().". GEOM TYPE :: ".$feature->getGeomType()." NAME ".$feature->getGeometry().
+                " DIMESION "
+                .$feature->getGeometry()->getDimension()
+                ."<br>";
+            echo "WKT :: ".$feature->getGeometry()->getSrs()."<br>";
             echo $feature->getFeatureID()." ---- FIELD COUNT :: ".$feature->getFieldCount()
                 ." Fields { <small>".$feature->getFieldNames()."</small> } <br>";
 

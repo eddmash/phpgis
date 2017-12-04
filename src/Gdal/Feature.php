@@ -17,6 +17,7 @@ use Eddmash\PhpGis\Gdal\Wrapper\Gdal;
 
 class Feature implements \Iterator
 {
+    public $_dfnPtr;
     private $iteratorPos =0;
     private $_ptr;
     private $layerPtr;
@@ -33,6 +34,7 @@ class Feature implements \Iterator
             throw new GdalException('Cannot create OGR Feature, invalid pointer given.');
         endif;
         $this->_ptr = $featurePtr;
+        $this->_dfnPtr = Gdal::getFeatureDefn($this->_ptr);
         $this->layerPtr = $layerPtr;
     }
 
@@ -59,6 +61,16 @@ class Feature implements \Iterator
             $fields[] = Gdal::getFieldName(Gdal::getFeatureFieldDefn($this->_ptr, $fli));
         }
         return implode(", ", $fields);
+    }
+
+    public function getGeomType()
+    {
+        return Gdal::getFeatureGeomType($this->_dfnPtr);
+    }
+
+    public function getGeometry()
+    {
+        return new OgrGeometry(Gdal::getFeatureGeometry($this->_ptr), $this->_ptr);
     }
 
     /**
