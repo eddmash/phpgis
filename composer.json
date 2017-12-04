@@ -1,0 +1,8 @@
+{
+  "name": "eddmash/phpgis",
+  "autoload": {
+    "psr-4": {
+      "Eddmash\\PhpGis\\":"src/"
+    }
+  }
+}
