@@ -32,7 +32,7 @@ class SpatialReference
         return Gdal::getAuthorityCode($this->_ptr, $key);
     }
 
-    public function getAuthorityName($key=null)
+    public function getAuthorityName($key)
     {
         return Gdal::getAuthorityName($this->_ptr, $key);
     }
@@ -40,6 +40,31 @@ class SpatialReference
     public function getAttralue($attr, $child = 0)
     {
         return Gdal::getAttrValue($this->_ptr, $attr, $child);
+    }
+
+    public function isProjected()
+    {
+        return OSRIsProjected($this->_ptr);
+    }
+
+    public function isGeographic()
+    {
+        return OSRIsGeographic($this->_ptr);
+    }
+
+    public function isLocal()
+    {
+        return OSRIsLocal($this->_ptr);
+    }
+
+    public function isSame(SpatialReference $spatialReference)
+    {
+        return OSRIsSame($this->_ptr, $spatialReference->getPointer());
+    }
+
+    public function isGeocentric()
+    {
+        return OSRIsGeocentric($this->_ptr);
     }
 
     /**
@@ -61,5 +86,12 @@ class SpatialReference
     public function __toString()
     {
         return $this->exportToWkt();
+    }
+
+
+
+    protected function getPointer()
+    {
+        return $this->_ptr;
     }
 }

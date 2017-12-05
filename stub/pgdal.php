@@ -9,6 +9,39 @@
  * file that was distributed with this source code.
  */
 
+define("wkbUnknown", wkbUnknown);
+define("wkbNone", wkbNone);
+define("wkbPoint", wkbPoint);
+define("wkbLineString", wkbLineString);
+define("wkbPolygon", wkbPolygon);
+define("wkbMultiPoint", wkbMultiPoint);
+define("wkbMultiLineString", wkbMultiLineString);
+define("wkbMultiPolygon", wkbMultiPolygon);
+define("wkbGeometryCollection", wkbGeometryCollection);
+define("wkbLinearRing", wkbLinearRing);
+define("wkbPoint25D", wkbPoint25D);
+define("wkbLineString25D", wkbLineString25D);
+define("wkbPolygon25D", wkbPolygon25D);
+define("wkbMultiPoint25D", wkbMultiPoint25D);
+define("wkbMultiLineString25D", wkbMultiLineString25D);
+define("wkbMultiPolygon25D", wkbMultiPolygon25D);
+define("wkbGeometryCollection25D", wkbGeometryCollection25D);
+
+define("OFTInteger", OFTInteger);
+define("OFTIntegerList", OFTIntegerList);
+define("OFTInteger64", OFTInteger64);
+define("OFTInteger64List", OFTInteger64List);
+define("OFTReal", OFTReal);
+define("OFTRealList", OFTRealList);
+define("OFTString", OFTString);
+define("OFTStringList", OFTStringList);
+define("OFTWideString", OFTWideString);
+define("OFTWideStringList", OFTWideStringList);
+define("OFTBinary", OFTBinary);
+define("OFTDate", OFTDate);
+define("OFTTime", OFTTime);
+define("OFTDateTime", OFTDateTime);
+
 /**
  * @since 1.1.0
  *
@@ -118,6 +151,11 @@ function OGR_L_ResetReading($layerHandle)
 
 }
 
+function OGR_L_GetLayerDefn($layerHandle)
+{
+
+}
+
 /**
  * Test if this layer supported the named capability.
  *
@@ -208,9 +246,7 @@ function OGR_F_GetFID($featureHandle)
 function OGR_F_GetDefnRef($featureHandle){
 
 }
-function OGR_FD_GetGeomType($featureDfnHandle){
 
-}
 function OGR_F_GetGeometryRef($featureDfnHandle){
 
 }
@@ -242,6 +278,22 @@ function OGR_Fld_GetNameRef($handle){
 
 }
 
+function OGR_Fld_GetType($handle){
+
+}
+
+
+function OGR_FD_GetGeomType($featureDfnHandle){
+
+}
+
+function OGR_FD_GetFieldCount($featureDfnHandle){}
+
+function OGR_FD_GetFieldDefn($featureDfnHandle, $index){}
+
+function OGR_FD_GetFieldIndex($featureDfnHandle, $name){}
+
+
 
 function OGR_G_GetGeometryName($geometryHandle){
 
@@ -263,4 +315,9 @@ function  OSRGetAuthorityCode($srsPtr, $key=null){}
 function  OSRGetAuthorityName($srsPtr, $key=null){}
 function  OSRGetAttrValue($srsPtr, $key, $child=0){}
 
+function OSRIsProjected($srsPtr){}
+function OSRIsGeographic($srsPtr){}
+function OSRIsLocal($srsPtr){}
+function OSRIsSame($srsPtr, $srsPtr2){}
+function OSRIsGeocentric($srsPtr){}
 

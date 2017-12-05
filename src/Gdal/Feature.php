@@ -13,6 +13,7 @@ namespace Eddmash\PhpGis\Gdal;
 
 
 use Eddmash\PhpGis\Gdal\Exceptions\GdalException;
+use Eddmash\PhpGis\Gdal\OgrFields\Field;
 use Eddmash\PhpGis\Gdal\Wrapper\Gdal;
 
 class Feature implements \Iterator
@@ -65,7 +66,7 @@ class Feature implements \Iterator
 
     public function getGeomType()
     {
-        return Gdal::getFeatureGeomType($this->_dfnPtr);
+        return new OgrGeometryType(Gdal::getGeomTypeFromFeatureDefn($this->_dfnPtr));
     }
 
     public function getGeometry()

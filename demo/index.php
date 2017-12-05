@@ -18,14 +18,17 @@ try{
     $ds = new DataSource('KEN_adm/KEN_adm1.shp');
     echo " Datasource <strong>".$ds->getName()."</strong> has <strong>".$ds->getLayerCount()."</strong> layers <br>";
     foreach ($ds as $index => $layer) :
-        echo " LAYER ". $layer." FEATURE COUNT ".$layer->getFeatureCount()."<br>";
+        echo " LAYER ". $layer." FEATURE COUNT ".$layer->getFeatureCount()." GEOM ".$layer->getGeomType()."<br>";
+        echo " ID_0 ".$layer->getField("ID_0")." <br>";
         foreach ($layer as $feature):
             echo $feature->getFeatureID().". GEOM TYPE :: ".$feature->getGeomType()." NAME ".$feature->getGeometry().
                 " DIMESION "
                 .$feature->getGeometry()->getDimension()
                 ."<br><br><br>";
             $srs = $feature->getGeometry()->getSrs();
-            echo "AUTHORITY ".$srs->getAuthorityName("GEOGCS"). " CODE ".$srs->getAuthorityCode("GEOGCS")."<br>";
+            echo "isPro ".$srs->isProjected(). " isGeo ".$srs->isGeographic()." isLocal ".$srs->isLocal()." isSame "
+                .$srs->isSame($srs). " isGEOC".$srs->isGeocentric()."<br>";
+            echo "AUTHORITY {".$srs->getAuthorityName("GEOGCS"). "} CODE {".$srs->getAuthorityCode("GEOGCS")."} <br>";
             echo "DATUM ".$srs->getAttralue("DATUM")."<br>";
             echo "WKT :: ".$srs->exportToPrettyWkt()."<br><br><br>";
             echo $feature->getFeatureID()." ---- FIELD COUNT :: ".$feature->getFieldCount()

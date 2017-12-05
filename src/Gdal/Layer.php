@@ -13,10 +13,12 @@ namespace Eddmash\PhpGis\Gdal;
 
 
 use Eddmash\PhpGis\Gdal\Exceptions\GdalException;
+use Eddmash\PhpGis\Gdal\OgrFields\Field;
 use Eddmash\PhpGis\Gdal\Wrapper\Gdal;
 
 class Layer implements \Iterator
 {
+    private $_dfnPtr;
     private $_currFeature = 0;
 
     private $canRandomAccess;
@@ -50,7 +52,32 @@ class Layer implements \Iterator
         endif;
         $this->_ptr = $layerPtr;
         $this->datasourcePtr = $datasourcePtr;
+        $this->_dfnPtr = Gdal::getLayerDefn($this->_ptr);
         $this->canRandomAccess = $this->testCapability(Gdal::OLCRandomRead);
+    }
+
+    public function getFieldCount()
+    {
+        return Gdal::getDefnFieldCount($this->_dfnPtr);
+    }
+
+    public function getField($id)
+    {
+        $field = null;
+        if (is_numeric($id)) :
+            $field = Field::getInstance(Gdal::getDefnFieldDefn($this->_dfnPtr, $id), $this->_ptr);
+        endif;
+        if (is_string($id)) :
+            $index = Gdal::getDefnFieldIndexByName($this->_dfnPtr, $id);
+            $field = Field::getInstance(Gdal::getDefnFieldDefn($this->_dfnPtr, $index), $this->_ptr);
+        endif;
+
+        return $field;
+    }
+
+    public function getGeomType()
+    {
+        return new OgrGeometryType(Gdal::getGeomTypeFromFeatureDefn($this->_dfnPtr));
     }
 
     public function getFeatureCount()
@@ -80,7 +107,6 @@ class Layer implements \Iterator
     {
         return Gdal::layerTestCapability($this->_ptr, $capability);
     }
-
 
     /**
      * @param $index
@@ -163,7 +189,6 @@ class Layer implements \Iterator
         $this->_currFeature = 0;
         Gdal::layerResetReading($this->_ptr);
     }
-
 
 
 }

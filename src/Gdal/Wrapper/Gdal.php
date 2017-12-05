@@ -49,34 +49,39 @@ class Gdal
 
 // ================================= Layer ==================================
 
-    public static function layerTestCapability($_ptr, $capability)
+    public static function layerTestCapability($layerHandle, $capability)
     {
-        return OGR_L_TestCapability($_ptr, $capability);
+        return OGR_L_TestCapability($layerHandle, $capability);
     }
 
-    public static function getLayerFeatureCount($_ptr)
+    public static function getLayerFeatureCount($layerHandle)
     {
-        return OGR_L_GetFeatureCount($_ptr);
+        return OGR_L_GetFeatureCount($layerHandle);
     }
 
-    public static function getLayerName($_ptr)
+    public static function getLayerName($layerHandle)
     {
-        return OGR_L_GetName($_ptr);
+        return OGR_L_GetName($layerHandle);
     }
 
-    public static function getLayerFeature($_ptr, $index)
+    public static function getLayerDefn($layerHandle)
     {
-        return OGR_L_GetFeature($_ptr, $index);
+        return OGR_L_GetLayerDefn($layerHandle);
     }
 
-    public static function getLayerNextFeature($_ptr)
+    public static function getLayerFeature($layerHandle, $index)
     {
-        return OGR_L_GetNextFeature($_ptr);
+        return OGR_L_GetFeature($layerHandle, $index);
     }
 
-    public static function layerResetReading($_ptr)
+    public static function getLayerNextFeature($layerHandle)
     {
-        return OGR_L_ResetReading($_ptr);
+        return OGR_L_GetNextFeature($layerHandle);
+    }
+
+    public static function layerResetReading($layerHandle)
+    {
+        return OGR_L_ResetReading($layerHandle);
     }
 
 // ================================= Feature ==================================
@@ -107,7 +112,7 @@ class Gdal
         return OGR_F_GetGeometryRef($featureHandle);
     }
 
-    public static function getFeatureGeomType($_ptrDefn)
+    public static function getGeomTypeFromFeatureDefn($_ptrDefn)
     {
         return OGR_FD_GetGeomType($_ptrDefn);
     }
@@ -115,12 +120,30 @@ class Gdal
 
 // ================================= Field ==================================
 
-    public static function getFieldName($_ptr)
+    public static function getFieldName($fieldDefnHandle)
     {
-        return OGR_Fld_GetNameRef($_ptr);
+        return OGR_Fld_GetNameRef($fieldDefnHandle);
+    }
+
+    public static function getFieldType($fieldDefnHandle)
+    {
+        return OGR_Fld_GetType($fieldDefnHandle);
     }
 
 // ================================= Feature Definition ==================================
+    public static function getDefnFieldCount($featureDfnHandle)
+    {
+        return OGR_FD_GetFieldCount($featureDfnHandle);
+    }
+
+    public static function getDefnFieldDefn($featureDfnHandle, $index)
+    {
+        return OGR_FD_GetFieldDefn($featureDfnHandle, $index);
+    }
+    public static function getDefnFieldIndexByName($featureDfnHandle, $name)
+    {
+        return OGR_FD_GetFieldIndex($featureDfnHandle, $name);
+    }
 // ================================= GEOMETRY Definition ==================================
     public static function getGeometryName($geometryHandle)
     {
@@ -166,5 +189,26 @@ class Gdal
     public static function getAttrValue($srsPtr, $key, $child = 0)
     {
         return OSRGetAttrValue($srsPtr, $key, $child);
+    }
+
+
+    public static function OSRIsProjected($srsPtr)
+    {
+    }
+
+    public static function OSRIsGeographic($srsPtr)
+    {
+    }
+
+    public static function OSRIsLocal($srsPtr)
+    {
+    }
+
+    public static function OSRIsSame($srsPtr, $srsPtr2)
+    {
+    }
+
+    public static function OSRIsGeocentric($srsPtr)
+    {
     }
 }
