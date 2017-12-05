@@ -23,8 +23,11 @@ try{
             echo $feature->getFeatureID().". GEOM TYPE :: ".$feature->getGeomType()." NAME ".$feature->getGeometry().
                 " DIMESION "
                 .$feature->getGeometry()->getDimension()
-                ."<br>";
-            echo "WKT :: ".$feature->getGeometry()->getSrs()."<br>";
+                ."<br><br><br>";
+            $srs = $feature->getGeometry()->getSrs();
+            echo "AUTHORITY ".$srs->getAuthorityName("GEOGCS"). " CODE ".$srs->getAuthorityCode("GEOGCS")."<br>";
+            echo "DATUM ".$srs->getAttralue("DATUM")."<br>";
+            echo "WKT :: ".$srs->exportToPrettyWkt()."<br><br><br>";
             echo $feature->getFeatureID()." ---- FIELD COUNT :: ".$feature->getFieldCount()
                 ." Fields { <small>".$feature->getFieldNames()."</small> } <br>";
 

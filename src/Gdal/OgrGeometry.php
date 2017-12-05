@@ -19,7 +19,13 @@ class OgrGeometry
 {
     public $featurePtr;
     protected $_ptr;
-    
+
+    /**
+     * OgrGeometry constructor.
+     * @param $geometryPtr
+     * @param $featurePtr
+     * @throws GdalException
+     */
     public function __construct($geometryPtr, $featurePtr)
     {
         if (!$geometryPtr):
@@ -50,7 +56,7 @@ class OgrGeometry
 
     public function getSrs()
     {
-        return Gdal::getSrs($this->_ptr);
+        return new SpatialReference(Gdal::getSrs($this->_ptr));
     }
 
     public function __toString()

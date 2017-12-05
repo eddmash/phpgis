@@ -256,3 +256,11 @@ function  OGR_G_ExportToWkt($geometryPtr){}
 function  OGR_G_GetSpatialReference($geometryPtr){}
 
 
+function  OSRExportToWkt($srsPtr){}
+
+function  OSRExportToPrettyWkt($srsPtr){}
+function  OSRGetAuthorityCode($srsPtr, $key=null){}
+function  OSRGetAuthorityName($srsPtr, $key=null){}
+function  OSRGetAttrValue($srsPtr, $key, $child=0){}
+
+

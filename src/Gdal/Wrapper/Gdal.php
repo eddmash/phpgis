@@ -141,4 +141,30 @@ class Gdal
     {
         return OGR_G_GetSpatialReference($geometryPtr);
     }
+
+    public static function OSRExportToWkt($srsPtr)
+    {
+        return OSRExportToWkt($srsPtr);
+    }
+
+    public static function OSRExportToPrettyWkt($srsPtr)
+    {
+        return OSRExportToPrettyWkt($srsPtr);
+    }
+
+
+    public static function getAuthorityCode($srsPtr, $key = null)
+    {
+        return OSRGetAuthorityCode($srsPtr, $key);
+    }
+
+    public static function getAuthorityName($srsPtr, $key = null)
+    {
+        return OSRGetAuthorityName($srsPtr, $key);
+    }
+
+    public static function getAttrValue($srsPtr, $key, $child = 0)
+    {
+        return OSRGetAttrValue($srsPtr, $key, $child);
+    }
 }
