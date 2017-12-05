@@ -155,6 +155,10 @@ function OGR_L_GetLayerDefn($layerHandle)
 {
 
 }
+function OGR_L_GetSpatialRef($layerHandle)
+{
+
+}
 
 /**
  * Test if this layer supported the named capability.
@@ -274,11 +278,19 @@ function OGR_F_GetFieldDefnRef($handle, $fieldIndex)
  *
  * @author Eddilbert Macharia (http://eddmash.com) <edd.cowan@gmail.com>
  */
-function OGR_Fld_GetNameRef($handle){
+function OGR_Fld_GetNameRef($fieldDefnHandle){
 
 }
 
-function OGR_Fld_GetType($handle){
+function OGR_Fld_GetType($fieldDefnHandle){
+
+}
+
+function OGR_Fld_GetWidth($fieldDefnHandle){
+
+}
+
+function OGR_Fld_GetPrecision($fieldDefnHandle){
 
 }
 
@@ -308,8 +320,8 @@ function  OGR_G_ExportToWkt($geometryPtr){}
 function  OGR_G_GetSpatialReference($geometryPtr){}
 
 
+function  OSRExportToProj4($srsPtr){}
 function  OSRExportToWkt($srsPtr){}
-
 function  OSRExportToPrettyWkt($srsPtr){}
 function  OSRGetAuthorityCode($srsPtr, $key=null){}
 function  OSRGetAuthorityName($srsPtr, $key=null){}
@@ -320,4 +332,5 @@ function OSRIsGeographic($srsPtr){}
 function OSRIsLocal($srsPtr){}
 function OSRIsSame($srsPtr, $srsPtr2){}
 function OSRIsGeocentric($srsPtr){}
+function OSRClone($srsPtr){}
 

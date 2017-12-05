@@ -56,7 +56,7 @@ class OgrGeometry
 
     public function getSrs()
     {
-        return new SpatialReference(Gdal::getSrs($this->_ptr));
+        return new SpatialReference(Gdal::OSRClone(Gdal::getGeometrySrs($this->_ptr)));
     }
 
     public function __toString()

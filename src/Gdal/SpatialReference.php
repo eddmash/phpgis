@@ -44,17 +44,17 @@ class SpatialReference
 
     public function isProjected()
     {
-        return OSRIsProjected($this->_ptr);
+        return Gdal::OSRIsProjected($this->_ptr);
     }
 
     public function isGeographic()
     {
-        return OSRIsGeographic($this->_ptr);
+        return Gdal::OSRIsGeographic($this->_ptr);
     }
 
     public function isLocal()
     {
-        return OSRIsLocal($this->_ptr);
+        return Gdal::OSRIsLocal($this->_ptr);
     }
 
     public function isSame(SpatialReference $spatialReference)
@@ -64,7 +64,17 @@ class SpatialReference
 
     public function isGeocentric()
     {
-        return OSRIsGeocentric($this->_ptr);
+        return Gdal::OSRIsGeocentric($this->_ptr);
+    }
+
+    /**
+     * @since 1.1.0
+     * @return string
+     * @author Eddilbert Macharia (http://eddmash.com) <edd.cowan@gmail.com>
+     */
+    public function exportToProj4()
+    {
+        return Gdal::OSRExportToProj4($this->_ptr);
     }
 
     /**

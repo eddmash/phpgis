@@ -15,11 +15,19 @@ require "../vendor/autoload.php";
 
 try{
 
-    $ds = new DataSource('KEN_adm/KEN_adm1.shp');
+//    $ds = new DataSource('KEN_adm/KEN_adm1.shp');
+//    $ds = new DataSource('cities/cities.shp');
+    $ds = new DataSource('world/TM_WORLD_BORDERS-0.3.shp');
     echo " Datasource <strong>".$ds->getName()."</strong> has <strong>".$ds->getLayerCount()."</strong> layers <br>";
     foreach ($ds as $index => $layer) :
         echo " LAYER ". $layer." FEATURE COUNT ".$layer->getFeatureCount()." GEOM ".$layer->getGeomType()."<br>";
-        echo " ID_0 ".$layer->getField("ID_0")." <br>";
+        if($layer->getSrs()):
+            echo " LAYER SRS ". $layer->getSrs()->exportToWkt()."<br><br><br>";
+            echo " PROJ4 ".$layer->getSrs()->exportToProj4()."<br><br><br>";
+        else:
+            echo "NO-SRS <br>";
+        endif;
+//        echo " ID_0 ".$layer->getField(100)." <br>";
         foreach ($layer as $feature):
             echo $feature->getFeatureID().". GEOM TYPE :: ".$feature->getGeomType()." NAME ".$feature->getGeometry().
                 " DIMESION "
@@ -30,7 +38,8 @@ try{
                 .$srs->isSame($srs). " isGEOC".$srs->isGeocentric()."<br>";
             echo "AUTHORITY {".$srs->getAuthorityName("GEOGCS"). "} CODE {".$srs->getAuthorityCode("GEOGCS")."} <br>";
             echo "DATUM ".$srs->getAttralue("DATUM")."<br>";
-            echo "WKT :: ".$srs->exportToPrettyWkt()."<br><br><br>";
+            echo "WKT :: ".$srs->exportToWkt()."<br><br><br>";
+            echo "AUTHORITY :: ".$srs->getAttralue("AUTHORITY", 1)."<br><br><br>";
             echo $feature->getFeatureID()." ---- FIELD COUNT :: ".$feature->getFieldCount()
                 ." Fields { <small>".$feature->getFieldNames()."</small> } <br>";
 
@@ -43,6 +52,8 @@ try{
 }catch (GdalException $exception){
     echo $exception->getMessage()."<br>";
 }
+
+
 //OGRRegisterAll();
 //$ds = OGROpen('usa_states/usa_state_shapefile.shp');
 //if ($ds):

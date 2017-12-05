@@ -79,6 +79,11 @@ class Gdal
         return OGR_L_GetNextFeature($layerHandle);
     }
 
+    public static function getLayerSpatialReference($layerHandle)
+    {
+        return OGR_L_GetSpatialRef($layerHandle);
+    }
+
     public static function layerResetReading($layerHandle)
     {
         return OGR_L_ResetReading($layerHandle);
@@ -130,6 +135,16 @@ class Gdal
         return OGR_Fld_GetType($fieldDefnHandle);
     }
 
+    public static function getFieldWidth($fieldDefnHandle)
+    {
+        return OGR_Fld_GetWidth($fieldDefnHandle);
+    }
+
+    public static function getFieldPrecision($fieldDefnHandle)
+    {
+        return OGR_Fld_GetPrecision($fieldDefnHandle);
+    }
+
 // ================================= Feature Definition ==================================
     public static function getDefnFieldCount($featureDfnHandle)
     {
@@ -160,11 +175,15 @@ class Gdal
         return OGR_G_ExportToWkt($geometryPtr);
     }
 
-    public static function getSrs($geometryPtr)
+    public static function getGeometrySrs($geometryPtr)
     {
         return OGR_G_GetSpatialReference($geometryPtr);
     }
 
+    public static function OSRExportToProj4($srsPtr)
+    {
+        return OSRExportToProj4($srsPtr);
+    }
     public static function OSRExportToWkt($srsPtr)
     {
         return OSRExportToWkt($srsPtr);
@@ -194,21 +213,30 @@ class Gdal
 
     public static function OSRIsProjected($srsPtr)
     {
+        return OSRIsProjected($srsPtr);
     }
 
     public static function OSRIsGeographic($srsPtr)
     {
+        return OSRIsGeographic($srsPtr);
     }
 
     public static function OSRIsLocal($srsPtr)
     {
+        return OSRIsLocal($srsPtr);
     }
 
     public static function OSRIsSame($srsPtr, $srsPtr2)
     {
+        return OSRIsSame($srsPtr, $srsPtr2);
     }
 
     public static function OSRIsGeocentric($srsPtr)
     {
+        return OSRIsGeocentric($srsPtr);
+    }
+    public static function OSRClone($srsPtr)
+    {
+        return OSRClone($srsPtr);
     }
 }

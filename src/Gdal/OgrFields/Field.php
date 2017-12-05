@@ -98,7 +98,7 @@ class Field
 
     public function getType()
     {
-        return OGR_Fld_GetType($this->_ptr);
+        return Gdal::getFieldType($this->_ptr);
     }
 
     /**
@@ -109,11 +109,27 @@ class Field
      */
     public function getName()
     {
-        return OGR_Fld_GetNameRef($this->_ptr);
+        return Gdal::getFieldName($this->_ptr);
+    }
+
+    public function getWidth()
+    {
+        return Gdal::getFieldWidth($this->_ptr);
+    }
+
+    public function getPrecision()
+    {
+        return Gdal::getFieldPrecision($this->_ptr);
     }
 
     public function __toString()
     {
-        return sprintf("< %s : %s >", get_class($this), $this->getName());
+        return sprintf(
+            "< %s(%s.%s) : %s>",
+            get_class($this),
+            $this->getWidth(),
+            $this->getPrecision(),
+            $this->getName()
+        );
     }
 }

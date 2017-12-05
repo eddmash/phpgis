@@ -61,14 +61,29 @@ class Layer implements \Iterator
         return Gdal::getDefnFieldCount($this->_dfnPtr);
     }
 
+    /**
+     * @param $id
+     * @return OgrFields\OFTInteger|OgrFields\OFTIntegerList|OgrFields\OFTReal|OgrFields\OFTRealList|OgrFields\OFTString|OgrFields\OFTStringList|OgrFields\OFTWideString|null
+     * @throws GdalException
+     * @since 1.1.0
+     *
+     * @author Eddilbert Macharia (http://eddmash.com) <edd.cowan@gmail.com>
+     */
     public function getField($id)
     {
         $field = null;
         if (is_numeric($id)) :
-            $field = Field::getInstance(Gdal::getDefnFieldDefn($this->_dfnPtr, $id), $this->_ptr);
+            $handle = Gdal::getDefnFieldDefn($this->_dfnPtr, $id);
+            if(!$handle):
+                throw new GdalException(sprintf("Field at position '%s' Does not exist in the shapefile", $id));
+            endif;
+            $field = Field::getInstance($handle, $this->_ptr);
         endif;
         if (is_string($id)) :
             $index = Gdal::getDefnFieldIndexByName($this->_dfnPtr, $id);
+            if($index == -1):
+                throw new GdalException(sprintf("Field with then name '%s' Does not exist in the shapefile", $id));
+            endif;
             $field = Field::getInstance(Gdal::getDefnFieldDefn($this->_dfnPtr, $index), $this->_ptr);
         endif;
 
@@ -96,6 +111,16 @@ class Layer implements \Iterator
     public function getFeatureById($fid)
     {
         return $this->makeFeature($fid);
+    }
+
+    public function getSrs()
+    {
+        $srsHandle = Gdal::getLayerSpatialReference($this->_ptr);
+        if($srsHandle):
+            return new SpatialReference(Gdal::OSRClone($srsHandle));
+        endif;
+
+        return null;
     }
 
     public function __toString()
