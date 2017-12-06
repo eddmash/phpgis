@@ -17,6 +17,9 @@ use Eddmash\PhpGis\Gdal\Exceptions\GdalException;
 use Eddmash\PhpGis\Gdal\Wrapper\Gdal;
 
 /**
+ * Represents the file you are working with—though it doesn't have to be a file.
+ * It could just as easily be a URL or some other source of data.
+ *
  * Class DataSource
  * @package Eddmash\PhpGis\Gdal
  * @since 1.1.0

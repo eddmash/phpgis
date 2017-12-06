@@ -4,5 +4,8 @@
     "psr-4": {
       "Eddmash\\PhpGis\\":"src/"
     }
+  },
+  "require": {
+    "symfony/var-dumper": "^3.4"
   }
 }

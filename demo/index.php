@@ -22,31 +22,31 @@ try{
     foreach ($ds as $index => $layer) :
         echo " LAYER ". $layer." FEATURE COUNT ".$layer->getFeatureCount()." GEOM ".$layer->getGeomType()."<br>";
         if($layer->getSrs()):
-            echo " LAYER SRS ". $layer->getSrs()->exportToWkt()."<br><br><br>";
-            echo " PROJ4 ".$layer->getSrs()->exportToProj4()."<br><br><br>";
+            echo " LAYER SRS ". $layer->getSrs()->exportToWkt()."<br>";
+            echo " PROJ4 ".$layer->getSrs()->exportToProj4()."<br>";
         else:
             echo "NO-SRS <br>";
         endif;
-//        echo " ID_0 ".$layer->getField(100)." <br>";
+        echo "################# FEATURES ################### <br><br><br>";
+
         foreach ($layer as $feature):
             echo $feature->getFeatureID().". GEOM TYPE :: ".$feature->getGeomType()." NAME ".$feature->getGeometry().
                 " DIMESION "
                 .$feature->getGeometry()->getDimension()
-                ."<br><br><br>";
+                ."<br>";
             $srs = $feature->getGeometry()->getSrs();
             echo "isPro ".$srs->isProjected(). " isGeo ".$srs->isGeographic()." isLocal ".$srs->isLocal()." isSame "
                 .$srs->isSame($srs). " isGEOC".$srs->isGeocentric()."<br>";
             echo "AUTHORITY {".$srs->getAuthorityName("GEOGCS"). "} CODE {".$srs->getAuthorityCode("GEOGCS")."} <br>";
             echo "DATUM ".$srs->getAttralue("DATUM")."<br>";
-            echo "WKT :: ".$srs->exportToWkt()."<br><br><br>";
-            echo "AUTHORITY :: ".$srs->getAttralue("AUTHORITY", 1)."<br><br><br>";
+            echo "WKT :: ".$srs->exportToWkt()."<br>";
             echo $feature->getFeatureID()." ---- FIELD COUNT :: ".$feature->getFieldCount()
                 ." Fields { <small>".$feature->getFieldNames()."</small> } <br>";
 
             foreach ($feature as $field) :
                 echo " ********* ".$field."<br>";
             endforeach;
-
+            echo "<br><br><br>";
         endforeach;
     endforeach;
 }catch (GdalException $exception){

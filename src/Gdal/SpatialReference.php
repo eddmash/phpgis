@@ -14,6 +14,14 @@ namespace Eddmash\PhpGis\Gdal;
 
 use Eddmash\PhpGis\Gdal\Wrapper\Gdal;
 
+/**
+ * Class SpatialReference
+ *
+ * The spatial reference specifies the projection and datum used by the layer's data.
+ *
+ * @package Eddmash\PhpGis\Gdal
+ * @author: Eddilbert Macharia (http://eddmash.com)<edd.cowan@gmail.com>
+ */
 class SpatialReference
 {
     private $_ptr;

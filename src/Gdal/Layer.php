@@ -16,6 +16,19 @@ use Eddmash\PhpGis\Gdal\Exceptions\GdalException;
 use Eddmash\PhpGis\Gdal\OgrFields\Field;
 use Eddmash\PhpGis\Gdal\Wrapper\Gdal;
 
+/**
+ * Class Layer
+ *
+ * The data source has one or more layers, representing sets of related data.
+ *
+ * Forexample, a single data source representing a country may contain a "terrain" layer, a "contour lines" layer,
+ * a "roads" later, and a "city boundaries" layer.
+ *
+ * Other data sources may consist of just one layer. Each layer has a spatial reference and a list of features.
+ *
+ * @package Eddmash\PhpGis\Gdal
+ * @author: Eddilbert Macharia (http://eddmash.com)<edd.cowan@gmail.com>
+ */
 class Layer implements \Iterator
 {
     private $_dfnPtr;

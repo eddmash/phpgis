@@ -14,8 +14,21 @@ namespace Eddmash\PhpGis\Gdal;
 
 use Eddmash\PhpGis\Gdal\Exceptions\GdalException;
 use Eddmash\PhpGis\Gdal\OgrFields\Field;
+use Eddmash\PhpGis\Gdal\OgrGeometry\OgrGeometry;
 use Eddmash\PhpGis\Gdal\Wrapper\Gdal;
 
+/**
+ * Class Feature
+ *
+ * A feature corresponds to some significant element within the layer.
+ *
+ * For example, a feature might represent a state, a city, a road, an island,
+ * and so on. Each feature has a list of attributes(Eddmash\PhpGis\Gdal\OgrFields\Fields) and a
+ * geometry(Eddmash\PhpGis\Gdal\OgrGeometry).
+ *
+ * @package Eddmash\PhpGis\Gdal
+ * @author: Eddilbert Macharia (http://eddmash.com)<edd.cowan@gmail.com>
+ */
 class Feature implements \Iterator
 {
     public $_dfnPtr;
@@ -71,7 +84,7 @@ class Feature implements \Iterator
 
     public function getGeometry()
     {
-        return new OgrGeometry(Gdal::getFeatureGeometry($this->_ptr), $this->_ptr);
+        return OgrGeometry::getInstance(Gdal::getFeatureGeometry($this->_ptr), $this->_ptr);
     }
 
     /**

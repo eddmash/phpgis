@@ -316,8 +316,11 @@ function OGR_G_GetDimension($geometryHandle){
 }
 
 function  OGR_G_ExportToWkt($geometryPtr){}
+function  OGR_G_ExportToJson($geometryPtr){}
 
 function  OGR_G_GetSpatialReference($geometryPtr){}
+
+function  OGR_G_GetGeometryType($geometryPtr){}
 
 
 function  OSRExportToProj4($srsPtr){}

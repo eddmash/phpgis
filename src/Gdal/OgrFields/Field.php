@@ -15,6 +15,17 @@ namespace Eddmash\PhpGis\Gdal\OgrFields;
 use Eddmash\PhpGis\Gdal\Exceptions\GdalException;
 use Eddmash\PhpGis\Gdal\Wrapper\Gdal;
 
+/**
+ * Class Field
+ *
+ * The attributes provide additional meta-information about the feature.
+ *
+ * For example, an attribute might provide the name for a city's feature, its population, or the feature's unique ID
+ * used to retrieve additional information about the feature from an external database
+ *
+ * @package Eddmash\PhpGis\Gdal\OgrFields
+ * @author: Eddilbert Macharia (http://eddmash.com)<edd.cowan@gmail.com>
+ */
 class Field
 {
     public $_ptr;

@@ -165,6 +165,11 @@ class Gdal
         return OGR_G_GetGeometryName($geometryHandle);
     }
 
+    public static function getGeometryType($geometryHandle)
+    {
+        return OGR_G_GetGeometryType($geometryHandle);
+    }
+
     public static function getGeometryDimension($geometryPtr)
     {
         return OGR_G_GetDimension($geometryPtr);
@@ -173,6 +178,11 @@ class Gdal
     public static function exportToWkt($geometryPtr)
     {
         return OGR_G_ExportToWkt($geometryPtr);
+    }
+
+    public static function exportToJson($geometryPtr)
+    {
+        return OGR_G_ExportToJson($geometryPtr);
     }
 
     public static function getGeometrySrs($geometryPtr)
@@ -184,6 +194,7 @@ class Gdal
     {
         return OSRExportToProj4($srsPtr);
     }
+
     public static function OSRExportToWkt($srsPtr)
     {
         return OSRExportToWkt($srsPtr);
