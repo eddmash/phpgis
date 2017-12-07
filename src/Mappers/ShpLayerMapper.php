@@ -9,10 +9,8 @@
  */
 
 
-namespace Eddmash\PhpGis\Gdal\OgrFields;
-
-
-class OFTWideStringList extends Field
+namespace Eddmash\PhpGis\Gdal\Mappers;
+class ShpLayerMapper
 {
 
 }

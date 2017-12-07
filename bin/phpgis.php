@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the phpgis package.
+ * This file is part of the ziamis package.
  *
  * (c) Eddilbert Macharia (http://eddmash.com)<edd.cowan@gmail.com>
  *
@@ -8,11 +8,8 @@
  * file that was distributed with this source code.
  */
 
+use Eddmash\PhpGis\Gdal\Commands\ConsoleApplication;
 
-namespace Eddmash\PhpGis\Gdal\OgrFields;
 
+ConsoleApplication::run();
 
-class OFTWideStringList extends Field
-{
-
-}

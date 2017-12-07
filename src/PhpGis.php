@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the phpgis package.
+ * This file is part of the ziamis package.
  *
  * (c) Eddilbert Macharia (http://eddmash.com)<edd.cowan@gmail.com>
  *
@@ -8,11 +8,9 @@
  * file that was distributed with this source code.
  */
 
+namespace Eddmash\PhpGis;
 
-namespace Eddmash\PhpGis\Gdal\OgrFields;
-
-
-class OFTWideStringList extends Field
+class PhpGis
 {
-
+    const VERSION = "1.0.0";
 }

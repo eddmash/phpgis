@@ -1,11 +1,15 @@
 {
   "name": "eddmash/phpgis",
+
+  "require": {
+    "symfony/var-dumper": "^3.4",
+    "doctrine/dbal": "v2.5.13",
+    "symfony/console": "^3.0"
+  },
   "autoload": {
     "psr-4": {
       "Eddmash\\PhpGis\\":"src/"
     }
   },
-  "require": {
-    "symfony/var-dumper": "^3.4"
-  }
+  "bin": ["bin/phpgis"]
 }
