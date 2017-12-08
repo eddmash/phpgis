@@ -14,6 +14,7 @@ namespace Eddmash\PhpGis\Gdal\OgrGeometry;
 
 use Eddmash\PhpGis\Gdal\Exceptions\GdalException;
 use Eddmash\PhpGis\Gdal\OgrGeometryType;
+use Eddmash\PhpGis\Gdal\SpatialReference;
 use Eddmash\PhpGis\Gdal\Wrapper\Gdal;
 
 /**

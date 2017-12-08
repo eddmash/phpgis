@@ -82,6 +82,12 @@ class Feature implements \Iterator
         return new OgrGeometryType(Gdal::getGeomTypeFromFeatureDefn($this->_dfnPtr));
     }
 
+    /**
+     * @return OgrGeometry
+     * @since 1.1.0
+     *
+     * @author Eddilbert Macharia (http://eddmash.com) <edd.cowan@gmail.com>
+     */
     public function getGeometry()
     {
         return OgrGeometry::getInstance(Gdal::getFeatureGeometry($this->_ptr), $this->_ptr);

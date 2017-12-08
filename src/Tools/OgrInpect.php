@@ -18,8 +18,13 @@ use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\Table;
 use Eddmash\PhpGis\Gdal\DataSource;
 use Eddmash\PhpGis\Gdal\OgrFields\Field;
+use Eddmash\PhpGis\Gdal\OgrFields\OFTDate;
+use Eddmash\PhpGis\Gdal\OgrFields\OFTDateTime;
 use Eddmash\PhpGis\Gdal\OgrFields\OFTInteger;
+use Eddmash\PhpGis\Gdal\OgrFields\OFTInteger64;
 use Eddmash\PhpGis\Gdal\OgrFields\OFTReal;
+use Eddmash\PhpGis\Gdal\OgrFields\OFTString;
+use Eddmash\PhpGis\Gdal\OgrFields\OFTTime;
 
 class OgrInpect implements \Iterator
 {
@@ -74,14 +79,32 @@ class OgrInpect implements \Iterator
     private function addField(Table $table, Field $field)
     {
         $isDecimal = false;
-        if ($field instanceof OFTInteger) :
-            $type = "integer";
-        elseif ($field instanceof OFTReal) :
-            $type = "decimal";
-            $isDecimal = true;
-        else:
-            $type = "string";
-        endif;
+        switch (true):
+            case $field instanceof OFTInteger64:
+                $type = "bigint";
+                break;
+            case $field instanceof OFTInteger :
+                $type = "integer";
+                break;
+            case $field instanceof OFTDate:
+                $type = "date";
+                break;
+            case $field instanceof OFTDateTime:
+                $type = "datetime";
+                break;
+            case $field instanceof OFTTime:
+                $type = "time";
+                break;
+            case $field instanceof OFTString:
+                $type = "string";
+                break;
+            case $field instanceof OFTReal:
+                $type = "decimal";
+                $isDecimal = true;
+                break;
+            default:
+                $type = "string";
+        endswitch;
 
         $table->addColumn($field->getName(), $type, $this->getDoctrineColumnOptions($field, $isDecimal));
     }
