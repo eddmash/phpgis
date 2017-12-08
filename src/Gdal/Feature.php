@@ -32,7 +32,7 @@ use Eddmash\PhpGis\Gdal\Wrapper\Gdal;
 class Feature implements \Iterator
 {
     public $_dfnPtr;
-    private $iteratorPos =0;
+    private $iteratorPos = 0;
     private $_ptr;
     private $layerPtr;
 
@@ -74,6 +74,7 @@ class Feature implements \Iterator
         for ($fli = 0; $fli < $fieldCount; $fli++) {
             $fields[] = Gdal::getFieldName(Gdal::getFeatureFieldDefn($this->_ptr, $fli));
         }
+
         return implode(", ", $fields);
     }
 

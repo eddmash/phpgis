@@ -155,10 +155,12 @@ class Gdal
     {
         return OGR_FD_GetFieldDefn($featureDfnHandle, $index);
     }
+
     public static function getDefnFieldIndexByName($featureDfnHandle, $name)
     {
         return OGR_FD_GetFieldIndex($featureDfnHandle, $name);
     }
+
 // ================================= GEOMETRY Definition ==================================
     public static function getGeometryName($geometryHandle)
     {
@@ -246,6 +248,7 @@ class Gdal
     {
         return OSRIsGeocentric($srsPtr);
     }
+
     public static function OSRClone($srsPtr)
     {
         return OSRClone($srsPtr);

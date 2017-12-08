@@ -39,6 +39,7 @@ abstract class BaseCommand extends Command
         $name = get_class($this);
         $name = substr($name, strripos($name, '\\') + 1);
         $name = (false === strripos($name, 'Command')) ? $name : substr($name, 0, strripos($name, 'Command'));
+
         return strtolower($name);
     }
 

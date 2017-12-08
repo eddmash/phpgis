@@ -13,8 +13,6 @@ namespace Eddmash\PhpGis\Gdal\Commands;
 
 
 use Eddmash\PhpGis\Gdal\DataSource;
-use Eddmash\PhpGis\Gdal\Exceptions\GdalException;
-use Eddmash\PhpGis\Gdal\Mappers\ShpLayerMapper;
 use Eddmash\PhpGis\Tools\OgrInpect;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

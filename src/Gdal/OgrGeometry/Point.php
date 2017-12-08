@@ -11,10 +11,7 @@
 
 namespace Eddmash\PhpGis\Gdal\OgrGeometry;
 
-
-use Eddmash\PhpGis\Gdal\OgrGeometryType;
-
-class Point extends OgrGeometryType
+class Point extends OgrGeometry
 {
 
 }

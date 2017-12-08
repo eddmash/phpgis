@@ -12,9 +12,7 @@
 namespace Eddmash\PhpGis\Gdal\OgrGeometry;
 
 
-use Eddmash\PhpGis\Gdal\OgrGeometryType;
-
-class MultiPolygon extends OgrGeometryType
+class MultiPolygon extends OgrGeometry
 {
 
 }

@@ -13,16 +13,16 @@ require "../vendor/autoload.php";
  * file that was distributed with this source code.
  */
 
-try{
+try {
 
 //    $ds = new DataSource('KEN_adm/KEN_adm1.shp');
 //    $ds = new DataSource('cities/cities.shp');
     $ds = new DataSource('world/TM_WORLD_BORDERS-0.3.shp');
     echo " Datasource <strong>".$ds->getName()."</strong> has <strong>".$ds->getLayerCount()."</strong> layers <br>";
     foreach ($ds as $index => $layer) :
-        echo " LAYER ". $layer." FEATURE COUNT ".$layer->getFeatureCount()." GEOM ".$layer->getGeomType()."<br>";
-        if($layer->getSrs()):
-            echo " LAYER SRS ". $layer->getSrs()->exportToWkt()."<br>";
+        echo " LAYER ".$layer." FEATURE COUNT ".$layer->getFeatureCount()." GEOM ".$layer->getGeomType()."<br>";
+        if ($layer->getSrs()):
+            echo " LAYER SRS ".$layer->getSrs()->exportToWkt()."<br>";
             echo " PROJ4 ".$layer->getSrs()->exportToProj4()."<br>";
         else:
             echo "NO-SRS <br>";
@@ -35,9 +35,9 @@ try{
                 .$feature->getGeometry()->getDimension()
                 ."<br>";
             $srs = $feature->getGeometry()->getSrs();
-            echo "isPro ".$srs->isProjected(). " isGeo ".$srs->isGeographic()." isLocal ".$srs->isLocal()." isSame "
-                .$srs->isSame($srs). " isGEOC".$srs->isGeocentric()."<br>";
-            echo "AUTHORITY {".$srs->getAuthorityName("GEOGCS"). "} CODE {".$srs->getAuthorityCode("GEOGCS")."} <br>";
+            echo "isPro ".$srs->isProjected()." isGeo ".$srs->isGeographic()." isLocal ".$srs->isLocal()." isSame "
+                .$srs->isSame($srs)." isGEOC".$srs->isGeocentric()."<br>";
+            echo "AUTHORITY {".$srs->getAuthorityName("GEOGCS")."} CODE {".$srs->getAuthorityCode("GEOGCS")."} <br>";
             echo "DATUM ".$srs->getAttralue("DATUM")."<br>";
             echo "WKT :: ".$srs->exportToWkt()."<br>";
             echo $feature->getFeatureID()." ---- FIELD COUNT :: ".$feature->getFieldCount()
@@ -49,7 +49,7 @@ try{
             echo "<br><br><br>";
         endforeach;
     endforeach;
-}catch (GdalException $exception){
+} catch (GdalException $exception) {
     echo $exception->getMessage()."<br>";
 }
 

@@ -107,7 +107,6 @@ class SpatialReference
     }
 
 
-
     protected function getPointer()
     {
         return $this->_ptr;

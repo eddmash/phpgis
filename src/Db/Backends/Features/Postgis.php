@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the phpgis package.
  *
@@ -8,10 +9,13 @@
  * file that was distributed with this source code.
  */
 
+namespace Eddmash\PhpGis\Db\Backends\Features;
 
-namespace Eddmash\PhpGis\Gdal\Mappers;
 
-class ShpLayerMapper
+class Postgis extends BaseFeatures
 {
-
+    protected $supports3dFunctions = true;
+    protected $supports3dStorage=true;
+    protected $supportsLeftRightLookups = true;
+    protected $supportsRaster = true;
 }

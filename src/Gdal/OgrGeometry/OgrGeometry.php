@@ -53,6 +53,7 @@ class OgrGeometry
     {
         $geom = Gdal::getGeometryType($geometryPtr);
         $class = self::getClassName($geom);
+
         return new $class($geometryPtr, $featurePtr);
     }
 
@@ -94,6 +95,7 @@ class OgrGeometry
                 $type = self::class;
                 break;
         }
+
         return $type;
     }
 

@@ -155,6 +155,7 @@ function OGR_L_GetLayerDefn($layerHandle)
 {
 
 }
+
 function OGR_L_GetSpatialRef($layerHandle)
 {
 
@@ -222,7 +223,7 @@ function OGR_L_GetFeature($layerHandle, $feature_index)
 /**
  * Fetch number of fields on this feature.
  *
- * @param resource $featureHandle 	handle to the feature to get the fields count from.
+ * @param resource $featureHandle handle to the feature to get the fields count from.
  * @return int
  * @since 1.1.0
  *
@@ -247,11 +248,13 @@ function OGR_F_GetFID($featureHandle)
 
 }
 
-function OGR_F_GetDefnRef($featureHandle){
+function OGR_F_GetDefnRef($featureHandle)
+{
 
 }
 
-function OGR_F_GetGeometryRef($featureDfnHandle){
+function OGR_F_GetGeometryRef($featureDfnHandle)
+{
 
 }
 
@@ -278,62 +281,117 @@ function OGR_F_GetFieldDefnRef($handle, $fieldIndex)
  *
  * @author Eddilbert Macharia (http://eddmash.com) <edd.cowan@gmail.com>
  */
-function OGR_Fld_GetNameRef($fieldDefnHandle){
+function OGR_Fld_GetNameRef($fieldDefnHandle)
+{
 
 }
 
-function OGR_Fld_GetType($fieldDefnHandle){
+function OGR_Fld_GetType($fieldDefnHandle)
+{
 
 }
 
-function OGR_Fld_GetWidth($fieldDefnHandle){
+function OGR_Fld_GetWidth($fieldDefnHandle)
+{
 
 }
 
-function OGR_Fld_GetPrecision($fieldDefnHandle){
+function OGR_Fld_GetPrecision($fieldDefnHandle)
+{
 
 }
 
 
-function OGR_FD_GetGeomType($featureDfnHandle){
+function OGR_FD_GetGeomType($featureDfnHandle)
+{
 
 }
 
-function OGR_FD_GetFieldCount($featureDfnHandle){}
+function OGR_FD_GetFieldCount($featureDfnHandle)
+{
+}
 
-function OGR_FD_GetFieldDefn($featureDfnHandle, $index){}
+function OGR_FD_GetFieldDefn($featureDfnHandle, $index)
+{
+}
 
-function OGR_FD_GetFieldIndex($featureDfnHandle, $name){}
+function OGR_FD_GetFieldIndex($featureDfnHandle, $name)
+{
+}
 
 
-
-function OGR_G_GetGeometryName($geometryHandle){
+function OGR_G_GetGeometryName($geometryHandle)
+{
 
 }
 
-function OGR_G_GetDimension($geometryHandle){
+function OGR_G_GetDimension($geometryHandle)
+{
 
 }
 
-function  OGR_G_ExportToWkt($geometryPtr){}
-function  OGR_G_ExportToJson($geometryPtr){}
+function OGR_G_ExportToWkt($geometryPtr)
+{
+}
 
-function  OGR_G_GetSpatialReference($geometryPtr){}
+function OGR_G_ExportToJson($geometryPtr)
+{
+}
 
-function  OGR_G_GetGeometryType($geometryPtr){}
+function OGR_G_GetSpatialReference($geometryPtr)
+{
+}
+
+function OGR_G_GetGeometryType($geometryPtr)
+{
+}
 
 
-function  OSRExportToProj4($srsPtr){}
-function  OSRExportToWkt($srsPtr){}
-function  OSRExportToPrettyWkt($srsPtr){}
-function  OSRGetAuthorityCode($srsPtr, $key=null){}
-function  OSRGetAuthorityName($srsPtr, $key=null){}
-function  OSRGetAttrValue($srsPtr, $key, $child=0){}
+function OSRExportToProj4($srsPtr)
+{
+}
 
-function OSRIsProjected($srsPtr){}
-function OSRIsGeographic($srsPtr){}
-function OSRIsLocal($srsPtr){}
-function OSRIsSame($srsPtr, $srsPtr2){}
-function OSRIsGeocentric($srsPtr){}
-function OSRClone($srsPtr){}
+function OSRExportToWkt($srsPtr)
+{
+}
+
+function OSRExportToPrettyWkt($srsPtr)
+{
+}
+
+function OSRGetAuthorityCode($srsPtr, $key = null)
+{
+}
+
+function OSRGetAuthorityName($srsPtr, $key = null)
+{
+}
+
+function OSRGetAttrValue($srsPtr, $key, $child = 0)
+{
+}
+
+function OSRIsProjected($srsPtr)
+{
+}
+
+function OSRIsGeographic($srsPtr)
+{
+}
+
+function OSRIsLocal($srsPtr)
+{
+}
+
+function OSRIsSame($srsPtr, $srsPtr2)
+{
+}
+
+function OSRIsGeocentric($srsPtr)
+{
+}
+
+function OSRClone($srsPtr)
+{
+}
 

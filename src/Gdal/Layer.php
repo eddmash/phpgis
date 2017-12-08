@@ -87,14 +87,14 @@ class Layer implements \Iterator
         $field = null;
         if (is_numeric($id)) :
             $handle = Gdal::getDefnFieldDefn($this->_dfnPtr, $id);
-            if(!$handle):
+            if (!$handle):
                 throw new GdalException(sprintf("Field at position '%s' Does not exist in the shapefile", $id));
             endif;
             $field = Field::getInstance($handle, $this->_ptr);
         endif;
         if (is_string($id)) :
             $index = Gdal::getDefnFieldIndexByName($this->_dfnPtr, $id);
-            if($index == -1):
+            if ($index == -1):
                 throw new GdalException(sprintf("Field with then name '%s' Does not exist in the shapefile", $id));
             endif;
             $field = Field::getInstance(Gdal::getDefnFieldDefn($this->_dfnPtr, $index), $this->_ptr);
@@ -129,7 +129,7 @@ class Layer implements \Iterator
     public function getSrs()
     {
         $srsHandle = Gdal::getLayerSpatialReference($this->_ptr);
-        if($srsHandle):
+        if ($srsHandle):
             return new SpatialReference(Gdal::OSRClone($srsHandle));
         endif;
 
