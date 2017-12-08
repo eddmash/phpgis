@@ -12,6 +12,7 @@
 namespace Eddmash\PhpGis\Tools;
 
 
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
 use Doctrine\DBAL\Schema\Schema;
@@ -39,15 +40,15 @@ class OgrInpect implements \Iterator
 
     private $layerPos;
     /**
-     * @var
+     * @var Connection
      */
-    private $db;
+    private $connection;
 
-    public function __construct(DataSource $ds, $tableName, $db)
+    public function __construct(DataSource $ds, $tableName, Connection $connection)
     {
         $this->ds = $ds;
         $this->tableName = $tableName;
-        $this->db = $db;
+        $this->connection = $connection;
     }
 
     private function getLayerSql($pos)
@@ -65,15 +66,7 @@ class OgrInpect implements \Iterator
 
     private function getDbPlatform()
     {
-        switch ($this->db):
-            case "mysql":
-                $platform = new MySqlPlatform();
-                break;
-            default:
-                $platform = new PostgreSqlPlatform();
-        endswitch;
-
-        return $platform;
+        return $this->connection->getDatabasePlatform();
     }
 
     private function addField(Table $table, Field $field)

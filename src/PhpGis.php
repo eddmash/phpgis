@@ -10,7 +10,65 @@
 
 namespace Eddmash\PhpGis;
 
+use Doctrine\DBAL\Connection;
+use Eddmash\PhpGis\Gdal\Commands\ConsoleApplication;
+
 class PhpGis
 {
     const VERSION = "1.0.0";
+
+    /**
+     * @var Connection
+     */
+    private static $connection;
+
+    /**
+     * $connectionParams = array(
+     * 'dbname' => 'mydb',
+     * 'user' => 'user',
+     * 'password' => 'secret',
+     * 'host' => 'localhost',
+     * 'driver' => 'pdo_mysql',
+     * );
+     * @var array
+     */
+    private $db;
+
+    public function __construct($configs)
+    {
+        foreach ($configs as $name => $config) :
+            $this->{$name} = $config;
+        endforeach;
+
+        $this->init();
+    }
+
+    public function consoleRunner()
+    {
+        ConsoleApplication::run();
+    }
+
+    public function webRunner()
+    {
+        ConsoleApplication::run();
+    }
+
+    private function init()
+    {
+
+        if (!self::$connection) :
+
+            $config = new \Doctrine\DBAL\Configuration();
+
+            self::$connection = \Doctrine\DBAL\DriverManager::getConnection($this->db, $config);
+        endif;
+    }
+
+    /**
+     * @return Connection
+     */
+    public static function getConnection()
+    {
+        return self::$connection;
+    }
 }

@@ -8,8 +8,18 @@
  * file that was distributed with this source code.
  */
 
-use Eddmash\PhpGis\Gdal\Commands\ConsoleApplication;
+use Eddmash\PhpGis\PhpGis;
 
+$connectionParams = [
+    "db" => [
+        'dbname' => 'tester',
+        'user' => 'root',
+        'password' => 'root1.',
+        'host' => 'localhost',
+        'driver' => 'pdo_mysql',
+    ],
+];
 
-ConsoleApplication::run();
+$app = new PhpGis($connectionParams);
+$app->consoleRunner();
 

@@ -23,7 +23,7 @@ use Eddmash\PhpGis\Gdal\Wrapper\Gdal;
  * A feature corresponds to some significant element within the layer.
  *
  * For example, a feature might represent a state, a city, a road, an island,
- * and so on. Each feature has a list of attributes(Eddmash\PhpGis\Gdal\OgrFields\Fields) and a
+ * and so on. Each feature has a list of attributes(Eddmash\PhpGis\Gdal\OgrFields\Types) and a
  * geometry(Eddmash\PhpGis\Gdal\OgrGeometry).
  *
  * @package Eddmash\PhpGis\Gdal

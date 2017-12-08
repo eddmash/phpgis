@@ -12,9 +12,9 @@
 namespace Eddmash\PhpGis\Gdal\Commands;
 
 
+use Eddmash\PhpGis\Db\Database;
 use Eddmash\PhpGis\Gdal\DataSource;
-use Eddmash\PhpGis\Gdal\Exceptions\GdalException;
-use Eddmash\PhpGis\Gdal\Mappers\ShpLayerMapper;
+use Eddmash\PhpGis\PhpGis;
 use Eddmash\PhpGis\Tools\OgrInpect;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -48,11 +48,10 @@ class CreateSqlCommand extends BaseCommand
     {
         $dataSource = $input->getArgument('datasource');
         $tableName = $input->getArgument('tablename');
-        $db = $input->getOption('db');
 
         $ds = new DataSource($dataSource);
 
-        $inspect = new OgrInpect($ds, $tableName, $db);
+        $inspect = new OgrInpect($ds, $tableName, PhpGis::getConnection());
         foreach ($inspect as $mapping) :
             $output->writeln($mapping);
         endforeach;
