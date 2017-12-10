@@ -23,7 +23,7 @@ use Eddmash\PhpGis\Gdal\Wrapper\Gdal;
  * A feature corresponds to some significant element within the layer.
  *
  * For example, a feature might represent a state, a city, a road, an island,
- * and so on. Each feature has a list of attributes(Eddmash\PhpGis\Gdal\OgrFields\Fields) and a
+ * and so on. Each feature has a list of attributes(Eddmash\PhpGis\Gdal\OgrFields\Types) and a
  * geometry(Eddmash\PhpGis\Gdal\OgrGeometry).
  *
  * @package Eddmash\PhpGis\Gdal
@@ -42,7 +42,7 @@ class Feature implements \Iterator
      * @param $layerPtr
      * @throws GdalException
      */
-    public function __construct($featurePtr, $layerPtr)
+    protected function __construct($featurePtr, $layerPtr)
     {
         if (!$featurePtr):
             throw new GdalException('Cannot create OGR Feature, invalid pointer given.');
@@ -101,9 +101,27 @@ class Feature implements \Iterator
      *
      * @author Eddilbert Macharia (http://eddmash.com) <edd.cowan@gmail.com>
      */
-    public function getField($fieldId)
+    public function getFieldByIndex($index)
     {
-        return Field::getInstance(Gdal::getFeatureFieldDefn($this->_ptr, $fieldId), $this->_ptr);
+        return $this->makeField($index);
+    }
+
+    /**
+     * @param $name
+     * @return OgrFields\OFTInteger|OgrFields\OFTIntegerList|OgrFields\OFTReal|OgrFields\OFTRealList
+     * |OgrFields\OFTString|OgrFields\OFTStringList|OgrFields\OFTWideString
+     * @since 1.1.0
+     *
+     * @author Eddilbert Macharia (http://eddmash.com) <edd.cowan@gmail.com>
+     */
+    public function getFieldByName($name)
+    {
+        return $this->makeField(Gdal::getDefnFieldIndexByName($this->_dfnPtr, $name));
+    }
+
+    private function makeField($index)
+    {
+        return Field::getInstance($index, Gdal::getDefnFieldDefn($this->_dfnPtr, $index), $this->_ptr);
     }
 
     // ======================= ITERATE ================
@@ -116,7 +134,7 @@ class Feature implements \Iterator
      */
     public function current()
     {
-        return $this->getField($this->iteratorPos);
+        return $this->getFieldByIndex($this->iteratorPos);
     }
 
     /**

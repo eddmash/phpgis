@@ -2,8 +2,9 @@
   "name": "eddmash/phpgis",
   "require": {
     "symfony/var-dumper": "^3.4",
-    "doctrine/dbal": "v2.5.13",
-    "symfony/console": "^3.0"
+    "doctrine/dbal": "^2.5",
+    "symfony/console": "^3.0",
+    "doctrine/orm": "^2.5"
   },
   "autoload": {
     "psr-4": {

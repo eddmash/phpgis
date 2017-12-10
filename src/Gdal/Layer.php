@@ -90,14 +90,14 @@ class Layer implements \Iterator
             if (!$handle):
                 throw new GdalException(sprintf("Field at position '%s' Does not exist in the shapefile", $id));
             endif;
-            $field = Field::getInstance($handle, $this->_ptr);
+            $field = Field::getInstance($id, $handle, $this->_ptr);
         endif;
         if (is_string($id)) :
             $index = Gdal::getDefnFieldIndexByName($this->_dfnPtr, $id);
             if ($index == -1):
                 throw new GdalException(sprintf("Field with then name '%s' Does not exist in the shapefile", $id));
             endif;
-            $field = Field::getInstance(Gdal::getDefnFieldDefn($this->_dfnPtr, $index), $this->_ptr);
+            $field = Field::getInstance($index, Gdal::getDefnFieldDefn($this->_dfnPtr, $index), $this->_ptr);
         endif;
 
         return $field;
@@ -126,6 +126,12 @@ class Layer implements \Iterator
         return $this->makeFeature($fid);
     }
 
+    /**
+     * @return SpatialReference
+     * @since 1.1.0
+     *
+     * @author Eddilbert Macharia (http://eddmash.com) <edd.cowan@gmail.com>
+     */
     public function getSrs()
     {
         $srsHandle = Gdal::getLayerSpatialReference($this->_ptr);

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the phpgis package.
  *
@@ -8,15 +9,10 @@
  * file that was distributed with this source code.
  */
 
+namespace Eddmash\PhpGis\Exceptions;
 
-namespace Eddmash\PhpGis\Gdal\OgrFields;
 
-
-class OFTReal extends Field
+class NotImplementedError extends \Exception
 {
-    public function getValue()
-    {
-        return $this->asDouble();
-    }
 
 }

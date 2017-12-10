@@ -29,6 +29,7 @@ use Eddmash\PhpGis\Gdal\Wrapper\Gdal;
 class Field
 {
     public $_ptr;
+    private $index;
     private $featurePtr;
 
     /**
@@ -37,71 +38,72 @@ class Field
      * @param $featurePtr
      * @throws GdalException
      */
-    public function __construct($fieldDefnPtr, $featurePtr)
+    public function __construct($index, $fieldDefnPtr, $featurePtr)
     {
         if (!$fieldDefnPtr):
             throw new GdalException('Cannot create OGR Field, invalid pointer given.');
         endif;
 
+        $this->index = $index;
         $this->_ptr = $fieldDefnPtr;
         $this->featurePtr = $featurePtr;
     }
 
-    public static function getInstance($fieldDefnPtr, $featurePtr)
+    public static function getInstance($index, $fieldDefnPtr, $featurePtr)
     {
         $type = Gdal::getFieldType($fieldDefnPtr);
 
-        return self::getTypeFieldClass($type, $fieldDefnPtr, $featurePtr);
+        return self::getTypeFieldClass($index, $type, $fieldDefnPtr, $featurePtr);
     }
 
-    private static function getTypeFieldClass($type, $fieldDefnPtr, $featurePtr)
+    private static function getTypeFieldClass($index, $type, $fieldDefnPtr, $featurePtr)
     {
 
         switch ($type) {
             case OFTInteger:
-                $instance = new OFTInteger($fieldDefnPtr, $featurePtr);
+                $instance = new OFTInteger($index, $fieldDefnPtr, $featurePtr);
                 break;
             case OFTIntegerList:
-                $instance = new OFTIntegerList($fieldDefnPtr, $featurePtr);
+                $instance = new OFTIntegerList($index, $fieldDefnPtr, $featurePtr);
                 break;
             case OFTReal:
-                $instance = new OFTReal($fieldDefnPtr, $featurePtr);
+                $instance = new OFTReal($index, $fieldDefnPtr, $featurePtr);
                 break;
             case OFTRealList:
-                $instance = new OFTRealList($fieldDefnPtr, $featurePtr);
+                $instance = new OFTRealList($index, $fieldDefnPtr, $featurePtr);
                 break;
             case OFTString:
-                $instance = new OFTString($fieldDefnPtr, $featurePtr);
+                $instance = new OFTString($index, $fieldDefnPtr, $featurePtr);
                 break;
             case OFTStringList:
-                $instance = new OFTStringList($fieldDefnPtr, $featurePtr);
+                $instance = new OFTStringList($index, $fieldDefnPtr, $featurePtr);
                 break;
             case OFTWideString:
-                $instance = new OFTWideString($fieldDefnPtr, $featurePtr);
+                $instance = new OFTWideString($index, $fieldDefnPtr, $featurePtr);
                 break;
             case OFTWideStringList:
-                $instance = new OFTWideStringList($fieldDefnPtr, $featurePtr);
+                $instance = new OFTWideStringList($index, $fieldDefnPtr, $featurePtr);
                 break;
             case OFTBinary:
-                $instance = new OFTBinary($fieldDefnPtr, $featurePtr);
+                $instance = new OFTBinary($index, $fieldDefnPtr, $featurePtr);
                 break;
             case OFTDate:
-                $instance = new OFTDate($fieldDefnPtr, $featurePtr);
+                $instance = new OFTDate($index, $fieldDefnPtr, $featurePtr);
                 break;
             case OFTTime:
-                $instance = new OFTTime($fieldDefnPtr, $featurePtr);
+                $instance = new OFTTime($index, $fieldDefnPtr, $featurePtr);
                 break;
             case OFTDateTime:
-                $instance = new OFTDateTime($fieldDefnPtr, $featurePtr);
+                $instance = new OFTDateTime($index, $fieldDefnPtr, $featurePtr);
                 break;
             case OFTInteger64:
-                $instance = new OFTInteger64($fieldDefnPtr, $featurePtr);
+                $instance = new OFTInteger64($index, $fieldDefnPtr, $featurePtr);
                 break;
             case OFTInteger64List:
-                $instance = new OFTInteger64List($fieldDefnPtr, $featurePtr);
+                $instance = new OFTInteger64List($index, $fieldDefnPtr, $featurePtr);
                 break;
             default:
-                $instance = new Field($fieldDefnPtr, $featurePtr);
+                $instance = new Field($index, $fieldDefnPtr, $featurePtr);
         }
 
         return $instance;
@@ -133,14 +135,64 @@ class Field
         return Gdal::getFieldPrecision($this->_ptr);
     }
 
+    /**
+     * @return mixed
+     */
+    public function getIndex()
+    {
+        return $this->index;
+    }
+
+    public function asString()
+    {
+        return Gdal::getFieldAsString($this->featurePtr, $this->index);
+    }
+
+    public function asInt()
+    {
+        return Gdal::getFieldAsInteger($this->featurePtr, $this->index);
+    }
+
+    public function asDouble()
+    {
+        return Gdal::getFieldAsDouble($this->featurePtr, $this->index);
+    }
+
+    /**
+     * @return array
+     * @throws GdalException
+     * @since 1.1.0
+     *
+     * @author Eddilbert Macharia (http://eddmash.com) <edd.cowan@gmail.com>
+     */
+    public function asDatetime()
+    {
+        $status = Gdal::getFieldAsDateTime(
+            $this->featurePtr,
+            $this->index,
+            $year,
+            $month,
+            $day,
+            $hour,
+            $minute,
+            $second,
+            $timezone
+        );
+
+        if ($status):
+            return [$year, $month, $day, $hour, $minute, $second, $timezone];
+        endif;
+
+        throw new GDALException('Unable to retrieve date & time information from the field.');
+    }
+
+    public function getValue()
+    {
+        return $this->asString();
+    }
+
     public function __toString()
     {
-        return sprintf(
-            "< %s(%s.%s) : %s>",
-            get_class($this),
-            $this->getWidth(),
-            $this->getPrecision(),
-            $this->getName()
-        );
+        return (string)$this->getValue();
     }
 }

@@ -267,8 +267,37 @@ function OGR_F_GetGeometryRef($featureDfnHandle)
  * @param int $fieldIndex the field to fetch, from 0 to GetFieldCount()-1.
  * @return resource an handle to the field definition (from the OGRFeatureDefn).
  */
-function OGR_F_GetFieldDefnRef($handle, $fieldIndex)
+function OGR_F_GetFieldDefnRef($featureHandle, $fieldIndex)
 {
+
+}
+
+function OGR_F_GetFieldAsString($featureHandle, $fieldIndex)
+{
+
+}
+
+function OGR_F_GetFieldAsInteger($featureHandle, $fieldIndex)
+{
+
+}
+
+function OGR_F_GetFieldAsDouble($featureHandle, $fieldIndex)
+{
+
+}
+
+function OGR_F_GetFieldAsDateTime(
+    $featureHandle,
+    $fieldIndex,
+    &$year,
+    &$month,
+    &$day,
+    &$hour,
+    &$minute,
+    &$second,
+    &$timezone
+) {
 
 }
 

@@ -91,25 +91,25 @@ class Gdal
 
 // ================================= Feature ==================================
 
-    public static function getFeatureFieldCount($_ptr)
+    public static function getFeatureFieldCount($featureHandle)
     {
-        return OGR_F_GetFieldCount($_ptr);
+        return OGR_F_GetFieldCount($featureHandle);
     }
 
-    public static function getFeatureID($_ptr)
+    public static function getFeatureID($featureHandle)
     {
-        return OGR_F_GetFID($_ptr);
+        return OGR_F_GetFID($featureHandle);
     }
 
-    public static function getFeatureFieldDefn($_ptr, $fli)
+    public static function getFeatureFieldDefn($featureHandle, $fli)
     {
-        return OGR_F_GetFieldDefnRef($_ptr, $fli);
+        return OGR_F_GetFieldDefnRef($featureHandle, $fli);
     }
 
 
-    public static function getFeatureDefn($_ptr)
+    public static function getFeatureDefn($featureHandle)
     {
-        return OGR_F_GetDefnRef($_ptr);
+        return OGR_F_GetDefnRef($featureHandle);
     }
 
     public static function getFeatureGeometry($featureHandle)
@@ -117,11 +117,47 @@ class Gdal
         return OGR_F_GetGeometryRef($featureHandle);
     }
 
-    public static function getGeomTypeFromFeatureDefn($_ptrDefn)
+
+    public static function getFieldAsString($featureHandle, $fieldIndex)
     {
-        return OGR_FD_GetGeomType($_ptrDefn);
+        return OGR_F_GetFieldAsString($featureHandle, $fieldIndex);
+
     }
 
+    public static function getFieldAsInteger($featureHandle, $fieldIndex)
+    {
+        return OGR_F_GetFieldAsInteger($featureHandle, $fieldIndex);
+
+    }
+
+    public static function getFieldAsDouble($featureHandle, $fieldIndex)
+    {
+        return OGR_F_GetFieldAsDouble($featureHandle, $fieldIndex);
+    }
+
+    public static function getFieldAsDateTime(
+        $featureHandle,
+        $fieldIndex,
+        &$year,
+        &$month,
+        &$day,
+        &$hour,
+        &$minute,
+        &$second,
+        &$timezone
+    ) {
+        return OGR_F_GetFieldAsDateTime(
+            $featureHandle,
+            $fieldIndex,
+            $year,
+            $month,
+            $day,
+            $hour,
+            $minute,
+            $second,
+            $timezone
+        );
+    }
 
 // ================================= Field ==================================
 
@@ -159,6 +195,11 @@ class Gdal
     public static function getDefnFieldIndexByName($featureDfnHandle, $name)
     {
         return OGR_FD_GetFieldIndex($featureDfnHandle, $name);
+    }
+
+    public static function getGeomTypeFromFeatureDefn($featureDefnHandle)
+    {
+        return OGR_FD_GetGeomType($featureDefnHandle);
     }
 
 // ================================= GEOMETRY Definition ==================================

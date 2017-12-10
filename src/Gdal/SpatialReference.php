@@ -111,4 +111,15 @@ class SpatialReference
     {
         return $this->_ptr;
     }
+
+    /**
+     * @return int
+     * @since 1.1.0
+     *
+     * @author Eddilbert Macharia (http://eddmash.com) <edd.cowan@gmail.com>
+     */
+    public function getSrid()
+    {
+        return (int)$this->getAttralue("AUTHORITY", 1);
+    }
 }

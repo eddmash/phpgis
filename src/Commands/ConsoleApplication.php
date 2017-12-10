@@ -25,7 +25,7 @@ class ConsoleApplication
         $def = new ListCommand();
         $application->add($def);
         $application->setDefaultCommand($def->getName());
-        $application->add(new CreateSqlCommand());
+        $application->add(new InspectCommand());
         $application->run(null, $output);
 
     }

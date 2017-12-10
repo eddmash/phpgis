@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the phpgis package.
+ * This file is part of the ziamis package.
  *
  * (c) Eddilbert Macharia (http://eddmash.com)<edd.cowan@gmail.com>
  *
@@ -9,14 +9,11 @@
  */
 
 
-namespace Eddmash\PhpGis\Gdal\OgrFields;
+namespace Eddmash\PhpGis\Db\Types;
 
 
-class OFTReal extends Field
+class MultiPolygonType extends PolygonType
 {
-    public function getValue()
-    {
-        return $this->asDouble();
-    }
+    const GEOM_TYPE="MULTIPOLYGON";
 
 }
