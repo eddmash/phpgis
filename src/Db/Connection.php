@@ -19,7 +19,11 @@ class Connection extends \Doctrine\DBAL\Connection
 
     public function insert($tableExpression, array $data, array $types = array())
     {
+        return parent::insert($tableExpression, $this->prepareData($tableExpression, $data), $types);
+    }
 
+    private function prepareData($tableExpression, $data)
+    {
         try {
             $_data = [];
             $table = $this->getSchemaManager()->createSchema()->getTable($tableExpression);
@@ -34,7 +38,6 @@ class Connection extends \Doctrine\DBAL\Connection
         } catch (SchemaException $e) {
             echo $e->getMessage()."<br>";
         }
-
-        return parent::insert($tableExpression, $data, $types);
+        return $data;
     }
 }

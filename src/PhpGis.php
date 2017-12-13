@@ -19,76 +19,65 @@ use Eddmash\PhpGis\Db\Types\MultiPolygonType;
 use Eddmash\PhpGis\Db\Types\PointType;
 use Eddmash\PhpGis\Db\Types\PolygonType;
 use Eddmash\PhpGis\Gdal\Commands\ConsoleApplication;
+use Eddmash\PowerOrm\BaseOrm;
+use Eddmash\PowerOrm\Components\Component;
+use Eddmash\PowerOrm\Components\ComponentInterface;
 
-class PhpGis
+class PhpGis extends Component
 {
     const VERSION = "1.0.0";
 
+
+    public function __construct()
+    {
+    }
+
     /**
-     * @var Connection
+     * @param BaseOrm $baseOrm
+     * @param $dbType
+     * @param $doctrineType
+     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Eddmash\PowerOrm\Exception\OrmException
+     * @since 1.1.0
+     *
+     * @author Eddilbert Macharia (http://eddmash.com) <edd.cowan@gmail.com>
      */
-    private static $connection;
-
-    /**
-     * $connectionParams = array(
-     * 'dbname' => 'mydb',
-     * 'user' => 'user',
-     * 'password' => 'secret',
-     * 'host' => 'localhost',
-     * 'driver' => 'pdo_mysql',
-     * );
-     * @var array
-     */
-    private $db;
-
-    public function __construct($configs)
+    private function registerDoctrineTypeMapping(BaseOrm $baseOrm, $dbType, $doctrineType)
     {
-        foreach ($configs as $name => $config) :
-            $this->{$name} = $config;
-        endforeach;
-
-        $this->init();
+        $baseOrm->getDatabaseConnection()->getDatabasePlatform()->registerDoctrineTypeMapping($dbType, $doctrineType);
     }
-
-    public function consoleRunner()
-    {
-        ConsoleApplication::run();
-    }
-
-    public function webRunner()
-    {
-    }
-
     /**
      * @throws \Doctrine\DBAL\DBALException
      * @since 1.1.0
      *
      * @author Eddilbert Macharia (http://eddmash.com) <edd.cowan@gmail.com>
+     * @throws \Eddmash\PowerOrm\Exception\OrmException
      */
-    private function init()
+    function ready(BaseOrm $baseOrm)
     {
-
-        if (!self::$connection) :
-
-            $config = new \Doctrine\DBAL\Configuration();
-
-            $this->db["wrapperClass"] = \Eddmash\PhpGis\Db\Connection::class;
-            self::$connection = \Doctrine\DBAL\DriverManager::getConnection($this->db, $config);
-        endif;
-
         Type::addType("point", PointType::class);
         Type::addType("multipoint", MultiPointType::class);
         Type::addType("linestring", LineStringType::class);
         Type::addType("multilinestring", MultiLineStringType::class);
         Type::addType("polygon", PolygonType::class);
         Type::addType("multipolygon", MultiPolygonType::class);
+
+
+        $this->registerDoctrineTypeMapping($baseOrm,PointType::GEOM_TYPE, "point");
+        $this->registerDoctrineTypeMapping($baseOrm,MultiPointType::GEOM_TYPE, "multipoint");
+        $this->registerDoctrineTypeMapping($baseOrm,LineStringType::GEOM_TYPE, "linestring");
+        $this->registerDoctrineTypeMapping($baseOrm,MultiLineStringType::GEOM_TYPE, "multilinestring");
+        $this->registerDoctrineTypeMapping($baseOrm,PolygonType::GEOM_TYPE, "polygon");
+        $this->registerDoctrineTypeMapping($baseOrm,MultiPolygonType::GEOM_TYPE, "multipolygon");
     }
 
     /**
-     * @return Connection
+     * @inheritDoc
      */
-    public static function getConnection()
+    function getName()
     {
-        return self::$connection;
+        return "gis";
     }
+
+
 }

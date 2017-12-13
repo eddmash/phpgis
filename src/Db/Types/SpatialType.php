@@ -105,4 +105,5 @@ abstract class SpatialType extends Type
         return true;
     }
 
+
 }
