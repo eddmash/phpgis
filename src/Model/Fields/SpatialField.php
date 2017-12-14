@@ -1,0 +1,30 @@
+<?php
+
+/**
+ * This file is part of the powercomponents package.
+ *
+ * (c) Eddilbert Macharia (http://eddmash.com)<edd.cowan@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Eddmash\PhpGis\Model\Fields;
+
+
+use Eddmash\PhpGis\Db\Backends\Operations\BaseOperations;
+use Eddmash\PowerOrm\Db\ConnectionInterface;
+use Eddmash\PowerOrm\Model\Field\Field;
+
+abstract class SpatialField extends Field
+{
+    /**
+     * @inheritDoc
+     */
+    public function dbType(ConnectionInterface $connection)
+    {
+        return $connection->getOperations()->getDbType($this);
+    }
+
+
+}

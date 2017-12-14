@@ -12,6 +12,8 @@
 namespace Eddmash\PhpGis\Db\Backends\Features;
 
 
+use Doctrine\DBAL\Platforms\AbstractPlatform;
+
 class BaseFeatures
 {
     protected $gisEnabled = true;
@@ -51,4 +53,19 @@ class BaseFeatures
 
     // Does the database support a unique index on geometry fields?
     protected $supportsGeometryFieldUniqueIndex = true;
+
+
+    /**
+     * @param AbstractPlatform $platform
+     * @return BaseFeatures
+     * @since 1.1.0
+     *
+     * @author Eddilbert Macharia (http://eddmash.com) <edd.cowan@gmail.com>
+     */
+    public static function getFeatures(AbstractPlatform $platform)
+    {
+        $name = sprintf("Eddmash\PhpGis\Db\Backends\Features\%s", ucfirst($platform->getName()));
+
+        return new $name();
+    }
 }
