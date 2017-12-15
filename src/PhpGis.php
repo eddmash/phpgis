@@ -10,7 +10,6 @@
 
 namespace Eddmash\PhpGis;
 
-use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 use Eddmash\PhpGis\Db\Types\LineStringType;
 use Eddmash\PhpGis\Db\Types\MultiLineStringType;
@@ -18,10 +17,8 @@ use Eddmash\PhpGis\Db\Types\MultiPointType;
 use Eddmash\PhpGis\Db\Types\MultiPolygonType;
 use Eddmash\PhpGis\Db\Types\PointType;
 use Eddmash\PhpGis\Db\Types\PolygonType;
-use Eddmash\PhpGis\Gdal\Commands\ConsoleApplication;
 use Eddmash\PowerOrm\BaseOrm;
 use Eddmash\PowerOrm\Components\Component;
-use Eddmash\PowerOrm\Components\ComponentInterface;
 
 class PhpGis extends Component
 {
@@ -33,20 +30,6 @@ class PhpGis extends Component
     }
 
     /**
-     * @param BaseOrm $baseOrm
-     * @param $dbType
-     * @param $doctrineType
-     * @throws \Doctrine\DBAL\DBALException
-     * @throws \Eddmash\PowerOrm\Exception\OrmException
-     * @since 1.1.0
-     *
-     * @author Eddilbert Macharia (http://eddmash.com) <edd.cowan@gmail.com>
-     */
-    private function registerDoctrineTypeMapping(BaseOrm $baseOrm, $dbType, $doctrineType)
-    {
-        $baseOrm->getDatabaseConnection()->getDatabasePlatform()->registerDoctrineTypeMapping($dbType, $doctrineType);
-    }
-    /**
      * @throws \Doctrine\DBAL\DBALException
      * @since 1.1.0
      *
@@ -55,20 +38,7 @@ class PhpGis extends Component
      */
     function ready(BaseOrm $baseOrm)
     {
-        Type::addType("point", PointType::class);
-        Type::addType("multipoint", MultiPointType::class);
-        Type::addType("linestring", LineStringType::class);
-        Type::addType("multilinestring", MultiLineStringType::class);
-        Type::addType("polygon", PolygonType::class);
-        Type::addType("multipolygon", MultiPolygonType::class);
-
-
-        $this->registerDoctrineTypeMapping($baseOrm,PointType::GEOM_TYPE, "point");
-        $this->registerDoctrineTypeMapping($baseOrm,MultiPointType::GEOM_TYPE, "multipoint");
-        $this->registerDoctrineTypeMapping($baseOrm,LineStringType::GEOM_TYPE, "linestring");
-        $this->registerDoctrineTypeMapping($baseOrm,MultiLineStringType::GEOM_TYPE, "multilinestring");
-        $this->registerDoctrineTypeMapping($baseOrm,PolygonType::GEOM_TYPE, "polygon");
-        $this->registerDoctrineTypeMapping($baseOrm,MultiPolygonType::GEOM_TYPE, "multipolygon");
+        $this->registerDbalTypes($baseOrm);
     }
 
     /**
@@ -79,5 +49,70 @@ class PhpGis extends Component
         return "gis";
     }
 
+    /**
+     * @param BaseOrm $baseOrm
+     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Eddmash\PowerOrm\Exception\OrmException
+     * @since 1.1.0
+     *
+     * @author Eddilbert Macharia (http://eddmash.com) <edd.cowan@gmail.com>
+     */
+    private function registerDbalTypes(BaseOrm $baseOrm)
+    {
+
+        $this->registerDoctrineTypeMapping(
+            $baseOrm,
+            PointType::GEOM_TYPE,
+            "point",
+            PointType::class
+        );
+        $this->registerDoctrineTypeMapping(
+            $baseOrm,
+            MultiPointType::GEOM_TYPE,
+            "multipoint",
+            MultiPointType::class
+        );
+        $this->registerDoctrineTypeMapping(
+            $baseOrm,
+            LineStringType::GEOM_TYPE,
+            "linestring",
+            LineStringType::class
+        );
+        $this->registerDoctrineTypeMapping(
+            $baseOrm,
+            MultiLineStringType::GEOM_TYPE,
+            "multilinestring",
+            MultiLineStringType::class
+        );
+        $this->registerDoctrineTypeMapping(
+            $baseOrm,
+            PolygonType::GEOM_TYPE,
+            "polygon",
+            PolygonType::class
+        );
+        $this->registerDoctrineTypeMapping(
+            $baseOrm,
+            MultiPolygonType::GEOM_TYPE,
+            "multipolygon",
+            MultiPolygonType::class
+        );
+    }
+
+
+    /**
+     * @param BaseOrm $baseOrm
+     * @param $dbType
+     * @param $doctrineType
+     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Eddmash\PowerOrm\Exception\OrmException
+     * @since 1.1.0
+     *
+     * @author Eddilbert Macharia (http://eddmash.com) <edd.cowan@gmail.com>
+     */
+    private function registerDoctrineTypeMapping(BaseOrm $baseOrm, $dbType, $doctrineType, $typeClass)
+    {
+        Type::addType($doctrineType, $typeClass);
+        $baseOrm->getDatabaseConnection()->getDatabasePlatform()->registerDoctrineTypeMapping($dbType, $doctrineType);
+    }
 
 }

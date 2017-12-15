@@ -23,7 +23,7 @@ abstract class SpatialField extends Field
      */
     public function dbType(ConnectionInterface $connection)
     {
-        return $connection->getOperations()->getDbType($this);
+        return BaseOperations::getOperations($connection)->getDbType($this);
     }
 
 

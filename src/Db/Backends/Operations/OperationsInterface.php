@@ -30,6 +30,7 @@ interface OperationsInterface
     public function getSpatialSqlDeclaration(SpatialType $spatialType, $fieldDeclaration);
 
     public function convertToDatabaseValueSQL(SpatialType $spatialType, $sqlExpr);
+
     public function convertToPHPValueSQL(SpatialType $spatialType, $sqlExpr);
 
     public function getDbType(SpatialField $field);

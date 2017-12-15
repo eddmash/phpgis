@@ -47,7 +47,7 @@ abstract class SpatialType extends Type
      */
     private function getOperations(AbstractPlatform $platform)
     {
-        return BaseOperations::getOperator($platform);
+        return BaseOperations::getOperations($platform);
     }
 
 
@@ -61,7 +61,7 @@ abstract class SpatialType extends Type
      */
     public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
     {
-        return BaseOperations::getOperator($platform)->getSpatialSqlDeclaration($this, $fieldDeclaration);
+        return BaseOperations::getOperations($platform)->getSpatialSqlDeclaration($this, $fieldDeclaration);
     }
 
     /**
@@ -74,7 +74,7 @@ abstract class SpatialType extends Type
      */
     public function convertToDatabaseValueSQL($sqlExpr, AbstractPlatform $platform)
     {
-        return BaseOperations::getOperator($platform)->convertToDatabaseValueSQL($this, $sqlExpr);
+        return BaseOperations::getOperations($platform)->convertToDatabaseValueSQL($this, $sqlExpr);
     }
 
     /**
@@ -87,7 +87,7 @@ abstract class SpatialType extends Type
      */
     public function convertToPHPValueSQL($sqlExpr, $platform)
     {
-        return BaseOperations::getOperator($platform)->convertToPHPValueSQL($this, $sqlExpr);
+        return BaseOperations::getOperations($platform)->convertToPHPValueSQL($this, $sqlExpr);
     }
 
     /**

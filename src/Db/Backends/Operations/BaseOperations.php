@@ -14,6 +14,7 @@ namespace Eddmash\PhpGis\Db\Backends\Operations;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Eddmash\PhpGis\Db\Types\SpatialType;
+use Eddmash\PowerOrm\Db\ConnectionInterface;
 
 abstract class BaseOperations implements OperationsInterface
 {
@@ -30,9 +31,12 @@ abstract class BaseOperations implements OperationsInterface
      *
      * @author Eddilbert Macharia (http://eddmash.com) <edd.cowan@gmail.com>
      */
-    public static function getOperator(AbstractPlatform $platform)
+    public static function getOperations(ConnectionInterface $connection)
     {
-        $name = sprintf("Eddmash\PhpGis\Db\Backends\Operations\%s", ucfirst($platform->getName()));
+        $name = sprintf(
+            "Eddmash\PhpGis\Db\Backends\Operations\%s",
+            ucfirst($connection->getDatabasePlatform()->getName())
+        );
 
         return new $name();
     }
