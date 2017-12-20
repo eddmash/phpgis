@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the ziamis package.
+ * This file is part of the phpgis package.
  *
  * (c) Eddilbert Macharia (http://eddmash.com)<edd.cowan@gmail.com>
  *
@@ -20,6 +20,19 @@ use Eddmash\PhpGis\Db\Types\PolygonType;
 use Eddmash\PowerOrm\BaseOrm;
 use Eddmash\PowerOrm\Components\Component;
 
+/**
+ * PhpGis is component of the powerorm.
+ *
+ * To be able to take its full capability its needs to be registered with orm.
+ *
+ * 'components' => [PhpGis::class]
+ *
+ * Class PhpGis
+ * @package Eddmash\PhpGis
+ * @since 1.1.0
+ *
+ * @author Eddilbert Macharia (http://eddmash.com) <edd.cowan@gmail.com>
+ */
 class PhpGis extends Component
 {
     const VERSION = "1.0.0";

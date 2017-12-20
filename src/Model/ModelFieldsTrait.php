@@ -21,6 +21,7 @@ trait ModelFieldsTrait
 
     /**
      * @since 1.1.0
+     * @param array $opts
      * @return PointField
      * @author Eddilbert Macharia (http://eddmash.com) <edd.cowan@gmail.com>
      */

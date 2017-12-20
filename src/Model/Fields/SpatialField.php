@@ -18,6 +18,8 @@ use Eddmash\PowerOrm\Model\Field\Field;
 
 abstract class SpatialField extends Field
 {
+    protected $srid;
+    protected $spatialIndex;
     /**
      * @inheritDoc
      */

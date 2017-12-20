@@ -1,6 +1,7 @@
 <?php
+
 /**
- * This file is part of the phpgis package.
+ * This file is part of the powercomponents package.
  *
  * (c) Eddilbert Macharia (http://eddmash.com)<edd.cowan@gmail.com>
  *
@@ -8,14 +9,12 @@
  * file that was distributed with this source code.
  */
 
+namespace Eddmash\PhpGis\Model\Lookup;
 
-namespace Eddmash\PhpGis\Db\Types;
 
+use Eddmash\PowerOrm\Model\Lookup\BaseLookup;
 
-use Doctrine\DBAL\Platforms\AbstractPlatform;
-
-class LineStringType extends SpatialType
+class SpatialLookup extends BaseLookup
 {
-    const GEOM_TYPE="LINESTRING";
 
 }

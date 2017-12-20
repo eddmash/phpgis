@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the ziamis package.
+ * This file is part of the phpgis package.
  *
  * (c) Eddilbert Macharia (http://eddmash.com)<edd.cowan@gmail.com>
  *
@@ -12,7 +12,7 @@ require "vendor/autoload.php";
 $config = new \Doctrine\DBAL\Configuration();
 //..
 $connectionParams = array(
-    'dbname' => 'ziamis',
+    'dbname' => 'phpgis',
     'user' => 'root',
     'password' => '',
     'host' => 'localhost',
