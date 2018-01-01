@@ -11,7 +11,6 @@
 
 namespace Eddmash\PhpGis\Gdal;
 
-
 use Eddmash\PhpGis\Gdal\Wrapper\Gdal;
 
 /**

@@ -11,7 +11,6 @@
 
 namespace Eddmash\PhpGis\Gdal\Exceptions;
 
-
 class ExtensionMissingException extends GdalException
 {
 }

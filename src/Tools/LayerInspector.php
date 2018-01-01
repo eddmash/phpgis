@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the ziamis package.
+ * This file is part of the phpgis package.
  *
  * (c) Eddilbert Macharia (http://eddmash.com)<edd.cowan@gmail.com>
  *
@@ -10,7 +10,6 @@
 
 
 namespace Eddmash\PhpGis\Tools;
-
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Schema;
@@ -25,6 +24,15 @@ use Eddmash\PhpGis\Gdal\OgrFields\OFTInteger64;
 use Eddmash\PhpGis\Gdal\OgrFields\OFTReal;
 use Eddmash\PhpGis\Gdal\OgrFields\OFTString;
 use Eddmash\PhpGis\Gdal\OgrFields\OFTTime;
+use Eddmash\PhpGis\Model\Model;
+use Eddmash\PowerOrm\Db\ConnectionInterface;
+use Eddmash\PowerOrm\Form\Fields\CharField;
+use Eddmash\PowerOrm\Form\Fields\DateField;
+use Eddmash\PowerOrm\Form\Fields\DecimalField;
+use Eddmash\PowerOrm\Form\Fields\IntegerField;
+use Eddmash\PowerOrm\Form\Fields\TimeField;
+use Eddmash\PowerOrm\Migration\FormatFileContent;
+use Eddmash\PowerOrm\Model\Field\DateTimeField;
 
 class LayerInspector
 {
@@ -35,114 +43,119 @@ class LayerInspector
     /**
      * @var
      */
-    private $tableName;
+    private $modelname;
 
     private $layerPos;
-    /**
-     * @var Connection
-     */
-    private $connection;
 
-    public function __construct(DataSource $ds, $tableName, Connection $connection)
+    public function __construct(DataSource $ds, $modelname)
     {
         $this->ds = $ds;
-        $this->tableName = $tableName;
-        $this->connection = $connection;
+        $this->modelname = $modelname;
     }
 
-    public function getCreateStatement($pos)
+
+    private function addGeometryField(Layer $layer)
     {
-        $layer = $this->ds->getLayerByIndex($pos);
-        $schema = new Schema();
-        $table = $schema->createTable($this->tableName);
-
-        $fieldCount = $this->ds->getLayerByIndex($pos)->getFieldCount();
-        foreach (range(0, $fieldCount - 1) as $fieldID) :
-            $this->addField($table, $layer->getField($fieldID));
-        endforeach;
-
-        $this->addGeometry($table, $layer);
-
-
-        return $schema->toSql($this->getDbPlatform());
-    }
-
-    private function getDbPlatform()
-    {
-        return $this->connection->getDatabasePlatform();
-    }
-
-    private function addGeometry(Table $table, Layer $layer)
-    {
-        $type = str_replace("25D", "", $layer->getGeomType()->getName());
-
+        $name = str_replace("25D", "", $layer->getGeomType()->getName());
+        $field = $layer->getGeomType()->getOrmField();
         $srid = $layer->getSrs()->getSrid();
+        $name = strtolower($name);
 
-        $table->addColumn(
-            "geom",
-            strtolower($type),
-            [
-                'customSchemaOptions' => [
-                    "srid" => ($srid) ? $srid : 4326,
-                    "is_geographic" => false,
-                    "dimensions" => 2,
-                ],
-            ]
+        $args = sprintf(
+            "['srid'=>%s, 'is_geographic'=>%s, 'dimensions'=>%s]",
+            ($srid) ? $srid : 4326,
+            'false',
+            2
+        );
+
+        return sprintf("'%s' => Model::%s(%s)", $name, $field, $args);
+    }
+
+    private function addField(Field $field)
+    {
+        $name = strtolower($field->getName());
+        $args = '';
+        switch (true):
+            case $field instanceof OFTInteger64:
+                $modelField = IntegerField::class;
+        break;
+        case $field instanceof OFTInteger:
+                $modelField = IntegerField::class;
+        break;
+        case $field instanceof OFTDate:
+                $modelField = DateField::class;
+        break;
+        case $field instanceof OFTDateTime:
+                $modelField = DateTimeField::class;
+        break;
+        case $field instanceof OFTTime:
+                $modelField = TimeField::class;
+        break;
+        case $field instanceof OFTReal:
+                $modelField = DecimalField::class;
+        $args = sprintf(
+                    "['maxDigits'=>%s, 'decimalPlaces'=>%s]",
+                    $field->getWidth(),
+                    $field->getPrecision()
+                );
+        break;
+        default:
+                $modelField = CharField::class;
+        $args = sprintf("['maxLength'=>%s]", $field->getWidth());
+        endswitch;
+
+        return sprintf(
+            "'%s' => Model::%s(%s)",
+            $name,
+            end(explode("\\", $modelField)),
+            $args
         );
     }
 
-    private function addField(Table $table, Field $field)
+    /**
+     * @param $layerIndex
+     * @throws \Eddmash\PhpGis\Gdal\Exceptions\GdalException
+     */
+    public function dump($layerIndex)
     {
-        $isDecimal = false;
-        switch (true):
-            case $field instanceof OFTInteger64:
-                $type = "bigint";
-                break;
-            case $field instanceof OFTInteger :
-                $type = "integer";
-                break;
-            case $field instanceof OFTDate:
-                $type = "date";
-                break;
-            case $field instanceof OFTDateTime:
-                $type = "datetime";
-                break;
-            case $field instanceof OFTTime:
-                $type = "time";
-                break;
-            case $field instanceof OFTString:
-                $type = "string";
-                break;
-            case $field instanceof OFTReal:
-                $type = "decimal";
-                $isDecimal = true;
-                break;
-            default:
-                $type = "string";
-        endswitch;
+        $content = FormatFileContent::createObject();
+        $content->addItem('<?php');
+        $content->addItem(
+            PHP_EOL.sprintf(
+                '/**Model generated at %s on %s by PowerOrm(%s)*/',
+                date('h:m:i'),
+                date('D, jS F Y'),
+                POWERORM_VERSION
+            ).PHP_EOL
+        );
+        $content->addItem(sprintf('use %s;'.PHP_EOL, Model::class));
+        $content->addItem(
+            sprintf(
+                "class %s extends Model{",
+                $this->modelname
+            )
+        );
+        $content->addIndent();
+        $content->addItem("private function unboundFields(){");
+        $content->addIndent();
 
-        $table->addColumn($field->getName(), $type, $this->getDoctrineColumnOptions($field, $isDecimal));
+        $layer = $this->ds->getLayerByIndex($layerIndex);
+        $content->addItem("return [");
+        $content->addIndent();
+
+        foreach (range(0, $layer->getFieldCount() - 1) as $index) :
+            $field = $layer->getField($index);
+        $content->addItem($this->addField($field).", ");
+        endforeach;
+        $content->addItem($this->addGeometryField($layer));
+        $content->reduceIndent();
+        $content->addItem("];");
+
+        $content->reduceIndent();
+        $content->addItem("}");
+        $content->reduceIndent();
+        $content->addItem("}");
+
+        return $content->toString();
     }
-
-    public function getDoctrineColumnOptions(Field $field, $isDecimal = false)
-    {
-        $options = [];
-        // set constraint
-        if ($field->getWidth()):
-            $options['length'] = $field->getWidth();
-        endif;
-
-        if ($isDecimal) :
-            if ($field->getPrecision()):
-                $options['scale'] = $field->getPrecision();
-            endif;
-            if ($field->getWidth()):
-                $options['precision'] = $field->getWidth();
-            endif;
-        endif;
-
-        return $options;
-    }
-
-
 }

@@ -11,8 +11,6 @@
 
 namespace Eddmash\PhpGis\Gdal\OgrGeometry;
 
-
 class GeometryCollection extends OgrGeometry
 {
-
 }

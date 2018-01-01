@@ -11,8 +11,8 @@
 
 namespace Eddmash\PhpGis\Db\Backends\Operations;
 
-
 use Eddmash\PhpGis\Db\Types\SpatialType;
+use Eddmash\PhpGis\Model\Fields\SpatialField;
 
 interface OperationsInterface
 {
@@ -29,5 +29,8 @@ interface OperationsInterface
     public function getSpatialSqlDeclaration(SpatialType $spatialType, $fieldDeclaration);
 
     public function convertToDatabaseValueSQL(SpatialType $spatialType, $sqlExpr);
+
     public function convertToPHPValueSQL(SpatialType $spatialType, $sqlExpr);
+
+    public function getDbType(SpatialField $field);
 }

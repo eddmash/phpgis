@@ -11,8 +11,6 @@
 
 namespace Eddmash\PhpGis\Exceptions;
 
-
 class NotImplementedError extends \Exception
 {
-
 }

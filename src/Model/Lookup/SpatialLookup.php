@@ -1,6 +1,7 @@
 <?php
+
 /**
- * This file is part of the phpgis package.
+ * This file is part of the powercomponents package.
  *
  * (c) Eddilbert Macharia (http://eddmash.com)<edd.cowan@gmail.com>
  *
@@ -8,9 +9,10 @@
  * file that was distributed with this source code.
  */
 
+namespace Eddmash\PhpGis\Model\Lookup;
 
-namespace Eddmash\PhpGis\Gdal\OgrFields;
+use Eddmash\PowerOrm\Model\Lookup\BaseLookup;
 
-class OFTBinary extends Field
+class SpatialLookup extends BaseLookup
 {
 }

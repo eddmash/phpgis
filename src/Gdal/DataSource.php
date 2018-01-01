@@ -11,7 +11,6 @@
 
 namespace Eddmash\PhpGis\Gdal;
 
-
 use Eddmash\PhpGis\Gdal\Exceptions\ExtensionMissingException;
 use Eddmash\PhpGis\Gdal\Exceptions\GdalException;
 use Eddmash\PhpGis\Gdal\Wrapper\Gdal;
@@ -28,7 +27,6 @@ use Eddmash\PhpGis\Gdal\Wrapper\Gdal;
  */
 class DataSource implements \Iterator
 {
-
     private $iteratorPos = 0;
     private $_ptr;
     private $filename;
@@ -51,8 +49,7 @@ class DataSource implements \Iterator
 
         $ptr = Gdal::datasourceOpen($datasource);
         if ($ptr):
-            $this->_ptr = $ptr;
-        else:
+            $this->_ptr = $ptr; else:
             throw new GdalException(sprintf("Invalid datasource %s", $datasource));
         endif;
     }
@@ -97,7 +94,6 @@ class DataSource implements \Iterator
 
     public function getLayerByName($name)
     {
-
         return Layer::getInstance(Gdal::getDatasourceLayerByName($this->_ptr, $name), $this->_ptr);
     }
 
@@ -158,6 +154,4 @@ class DataSource implements \Iterator
     {
         $this->iteratorPos = 0;
     }
-
-
 }

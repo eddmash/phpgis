@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the ziamis package.
+ * This file is part of the phpgis package.
  *
  * (c) Eddilbert Macharia (http://eddmash.com)<edd.cowan@gmail.com>
  *
@@ -11,11 +11,11 @@
 
 namespace Eddmash\PhpGis\Db\Types;
 
-
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
 use Eddmash\PhpGis\Db\Backends\Operations\BaseOperations;
 use Eddmash\PhpGis\Db\Backends\Operations\OperationsInterface;
+use Eddmash\PowerOrm\Db\ConnectionInterface;
 
 abstract class SpatialType extends Type
 {
@@ -47,7 +47,7 @@ abstract class SpatialType extends Type
      */
     private function getOperations(AbstractPlatform $platform)
     {
-        return BaseOperations::getOperator($platform);
+        return BaseOperations::getPlatformOperations($platform);
     }
 
 
@@ -61,7 +61,7 @@ abstract class SpatialType extends Type
      */
     public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
     {
-        return BaseOperations::getOperator($platform)->getSpatialSqlDeclaration($this, $fieldDeclaration);
+        return BaseOperations::getPlatformOperations($platform)->getSpatialSqlDeclaration($this, $fieldDeclaration);
     }
 
     /**
@@ -74,7 +74,7 @@ abstract class SpatialType extends Type
      */
     public function convertToDatabaseValueSQL($sqlExpr, AbstractPlatform $platform)
     {
-        return BaseOperations::getOperator($platform)->convertToDatabaseValueSQL($this, $sqlExpr);
+        return BaseOperations::getPlatformOperations($platform)->convertToDatabaseValueSQL($this, $sqlExpr);
     }
 
     /**
@@ -87,7 +87,7 @@ abstract class SpatialType extends Type
      */
     public function convertToPHPValueSQL($sqlExpr, $platform)
     {
-        return BaseOperations::getOperator($platform)->convertToPHPValueSQL($this, $sqlExpr);
+        return BaseOperations::getPlatformOperations($platform)->convertToPHPValueSQL($this, $sqlExpr);
     }
 
     /**
@@ -104,5 +104,4 @@ abstract class SpatialType extends Type
     {
         return true;
     }
-
 }

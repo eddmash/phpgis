@@ -11,8 +11,6 @@
 
 namespace Eddmash\PhpGis\Db\Backends\Features;
 
-
 class Mysql extends BaseFeatures
 {
-
 }

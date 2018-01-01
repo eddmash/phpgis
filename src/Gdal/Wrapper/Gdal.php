@@ -15,7 +15,7 @@ class Gdal
 {
     const  OLCRandomRead = "RandomRead";
 
-// ================================= Datasource ==================================
+    // ================================= Datasource ==================================
 
     public static function datasourceOpen($file, $update = false)
     {
@@ -47,7 +47,7 @@ class Gdal
         return OGR_DS_GetLayerByName($_ptr, $name);
     }
 
-// ================================= Layer ==================================
+    // ================================= Layer ==================================
 
     public static function layerTestCapability($layerHandle, $capability)
     {
@@ -89,7 +89,7 @@ class Gdal
         return OGR_L_ResetReading($layerHandle);
     }
 
-// ================================= Feature ==================================
+    // ================================= Feature ==================================
 
     public static function getFeatureFieldCount($featureHandle)
     {
@@ -121,13 +121,11 @@ class Gdal
     public static function getFieldAsString($featureHandle, $fieldIndex)
     {
         return OGR_F_GetFieldAsString($featureHandle, $fieldIndex);
-
     }
 
     public static function getFieldAsInteger($featureHandle, $fieldIndex)
     {
         return OGR_F_GetFieldAsInteger($featureHandle, $fieldIndex);
-
     }
 
     public static function getFieldAsDouble($featureHandle, $fieldIndex)
@@ -159,7 +157,7 @@ class Gdal
         );
     }
 
-// ================================= Field ==================================
+    // ================================= Field ==================================
 
     public static function getFieldName($fieldDefnHandle)
     {
@@ -181,7 +179,7 @@ class Gdal
         return OGR_Fld_GetPrecision($fieldDefnHandle);
     }
 
-// ================================= Feature Definition ==================================
+    // ================================= Feature Definition ==================================
     public static function getDefnFieldCount($featureDfnHandle)
     {
         return OGR_FD_GetFieldCount($featureDfnHandle);
@@ -202,7 +200,7 @@ class Gdal
         return OGR_FD_GetGeomType($featureDefnHandle);
     }
 
-// ================================= GEOMETRY Definition ==================================
+    // ================================= GEOMETRY Definition ==================================
     public static function getGeometryName($geometryHandle)
     {
         return OGR_G_GetGeometryName($geometryHandle);

@@ -13,5 +13,4 @@ namespace Eddmash\PhpGis\Gdal\OgrGeometry;
 
 class Point extends OgrGeometry
 {
-
 }

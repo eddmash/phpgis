@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the ziamis package.
+ * This file is part of the phpgis package.
  *
  * (c) Eddilbert Macharia (http://eddmash.com)<edd.cowan@gmail.com>
  *
@@ -23,4 +23,3 @@ $connectionParams = [
 
 $app = new PhpGis($connectionParams);
 $app->consoleRunner();
-

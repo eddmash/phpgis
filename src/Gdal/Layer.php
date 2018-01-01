@@ -11,7 +11,6 @@
 
 namespace Eddmash\PhpGis\Gdal;
 
-
 use Eddmash\PhpGis\Gdal\Exceptions\GdalException;
 use Eddmash\PhpGis\Gdal\OgrFields\Field;
 use Eddmash\PhpGis\Gdal\Wrapper\Gdal;
@@ -87,22 +86,25 @@ class Layer implements \Iterator
         $field = null;
         if (is_numeric($id)) :
             $handle = Gdal::getDefnFieldDefn($this->_dfnPtr, $id);
-            if (!$handle):
+        if (!$handle):
                 throw new GdalException(sprintf("Field at position '%s' Does not exist in the shapefile", $id));
-            endif;
-            $field = Field::getInstance($id, $handle, $this->_ptr);
+        endif;
+        $field = Field::getInstance($id, $handle, $this->_ptr);
         endif;
         if (is_string($id)) :
             $index = Gdal::getDefnFieldIndexByName($this->_dfnPtr, $id);
-            if ($index == -1):
+        if ($index == -1):
                 throw new GdalException(sprintf("Field with then name '%s' Does not exist in the shapefile", $id));
-            endif;
-            $field = Field::getInstance($index, Gdal::getDefnFieldDefn($this->_dfnPtr, $index), $this->_ptr);
+        endif;
+        $field = Field::getInstance($index, Gdal::getDefnFieldDefn($this->_dfnPtr, $index), $this->_ptr);
         endif;
 
         return $field;
     }
 
+    /**
+     * @return \Eddmash\PhpGis\Gdal\OgrGeometryType
+     */
     public function getGeomType()
     {
         return new OgrGeometryType(Gdal::getGeomTypeFromFeatureDefn($this->_dfnPtr));
@@ -163,13 +165,12 @@ class Layer implements \Iterator
     private function makeFeature($index)
     {
         if ($this->canRandomAccess):
-            return Feature::getInstance(Gdal::getLayerFeature($this->_ptr, $index), $this->_ptr);
-        else:
+            return Feature::getInstance(Gdal::getLayerFeature($this->_ptr, $index), $this->_ptr); else:
             foreach ($this as $feature) :
                 if ($feature->getFeatureID() == $index):
                     return $feature;
-                endif;
-            endforeach;
+        endif;
+        endforeach;
         endif;
         throw new GdalException(sprintf("Invalid feature id %s ", $index));
     }
@@ -233,6 +234,4 @@ class Layer implements \Iterator
         $this->_currFeature = 0;
         Gdal::layerResetReading($this->_ptr);
     }
-
-
 }

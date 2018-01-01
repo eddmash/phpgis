@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the ziamis package.
+ * This file is part of the phpgis package.
  *
  * (c) Eddilbert Macharia (http://eddmash.com)<edd.cowan@gmail.com>
  *
@@ -9,45 +9,72 @@
  */
 
 
-namespace Eddmash\PhpGis\Gdal\Commands;
-
+namespace Eddmash\PhpGis\Commands;
 
 use Eddmash\PhpGis\Db\Database;
 use Eddmash\PhpGis\Gdal\DataSource;
 use Eddmash\PhpGis\PhpGis;
 use Eddmash\PhpGis\Tools\LayerInspector;
+use Eddmash\PowerOrm\Helpers\FileHandler;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-
-class InspectCommand extends BaseCommand
+class InspectCommand extends Command
 {
     public function configure()
     {
         $this->setName($this->guessCommandName())
-            ->setDescription('Get sql statements to use when creating database tables for the provided datasource')
+            ->setDescription(
+                'Inspects the given OGR-compatible data source '.
+                '(e.g., a shapefile) and outputs'.PHP_EOL.
+                '                      a Powerorm model with the given model name.'.
+                ' For example:'.
+                PHP_EOL.'                      vendor/bin/pmanage '.
+                'inspect zipcode.shp Zipcode'
+            )
             ->addArgument(
                 'datasource',
                 InputArgument::REQUIRED,
                 'Datasource to read. '
             )->addArgument(
-                'tablename',
+                'modelname',
                 InputArgument::REQUIRED,
-                'Name of the database table to create. '
+                'Name of the model to create. '
+            )->addOption(
+                "write",
+                null,
+                InputOption::VALUE_NONE,
+                "Write this class to file"
             );
     }
 
     public function handle(InputInterface $input, OutputInterface $output)
     {
         $dataSource = $input->getArgument('datasource');
-        $tableName = $input->getArgument('tablename');
+        $modelname = $input->getArgument('modelname');
+        $write = $input->getOption('write');
 
         $ds = new DataSource($dataSource);
-        $connection = PhpGis::getConnection();
-        $importer = new LayerInspector($ds, $tableName, $connection);
+        try {
+            $importer = new LayerInspector($ds, ucfirst($modelname));
+            // this is because shapefiles only have one layer
+            $content = $importer->dump(0);
 
-        $sqlStatement = $importer->getCreateStatement(0);// this is because shapefiels only have layer
-        $output->writeln($sqlStatement);
+            if ($write):
+
+                // write content to file.
+                $handler = new FileHandler(
+                    dirname(dirname(dirname($_SERVER['PHP_SELF']))),
+                    ucfirst($modelname).".php"
+                );
+
+            $handler->write($content); else:
+                $output->writeln($content);
+            endif;
+        } catch (\Exception $e) {
+            $output->writeln($e->getMessage());
+        }
     }
 }

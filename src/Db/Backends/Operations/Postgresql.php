@@ -11,7 +11,6 @@
 
 namespace Eddmash\PhpGis\Db\Backends\Operations;
 
-
 use Eddmash\PhpGis\Db\Types\SpatialType;
 use Eddmash\PhpGis\Exceptions\NotImplementedError;
 
@@ -35,18 +34,16 @@ class Postgresql extends BaseOperations
         $srid = $fieldDeclaration['srid'];
 
         //todo raster
-        if($dimensions == 3):
+        if ($dimensions == 3):
             $geom = sprintf("%sZ", $geom);
         endif;
 
-        if($isGeographic):
-            if($srid != 4326):
+        if ($isGeographic):
+            if ($srid != 4326):
                 throw new  NotImplementedError('PostGIS only supports geography columns with an SRID of 4326.');
-            endif;
-            return sprintf('geography(%s,%d)', $geom, $srid);
+        endif;
+        return sprintf('geography(%s,%d)', $geom, $srid);
         endif;
         return sprintf('geometry(%s,%d)', $geom, $srid);
     }
-
-
 }

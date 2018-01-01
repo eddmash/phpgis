@@ -11,13 +11,24 @@
 
 namespace Eddmash\PhpGis\Db\Backends\Operations;
 
-
 use Eddmash\PhpGis\Db\Types\PointType;
 use Eddmash\PhpGis\Db\Types\SpatialType;
 use Eddmash\PhpGis\Exceptions\NotImplementedError;
+use Eddmash\PhpGis\Model\Fields\SpatialField;
 
 class Mysql extends BaseOperations
 {
+    /**
+     * @param SpatialField $field
+     * @throws NotImplementedError
+     * @since 1.1.0
+     *
+     * @author Eddilbert Macharia (http://eddmash.com) <edd.cowan@gmail.com>
+     */
+    public function getDbType(SpatialField $field)
+    {
+        return $field->getGeomType();
+    }
 
     /**
      * @param SpatialType $spatialType
@@ -58,6 +69,4 @@ class Mysql extends BaseOperations
     {
         return sprintf('GeomFromText("%s")', $sqlExpr);
     }
-
-
 }

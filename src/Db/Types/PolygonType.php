@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the ziamis package.
+ * This file is part of the phpgis package.
  *
  * (c) Eddilbert Macharia (http://eddmash.com)<edd.cowan@gmail.com>
  *
@@ -11,13 +11,10 @@
 
 namespace Eddmash\PhpGis\Db\Types;
 
-
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Eddmash\PhpGis\Db\Backends\Operations\BaseOperations;
 
 class PolygonType extends SpatialType
 {
     const GEOM_TYPE="POLYGON";
-
-
 }

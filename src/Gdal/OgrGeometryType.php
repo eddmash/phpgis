@@ -11,7 +11,6 @@
 
 namespace Eddmash\PhpGis\Gdal;
 
-
 class OgrGeometryType
 {
     private $num;
@@ -96,5 +95,11 @@ class OgrGeometryType
     public function __toString()
     {
         return $this->getName();
+    }
+
+    public function getOrmField()
+    {
+        $name = str_replace("25D", "", $this->getName());
+        return sprintf("%sField", $name);
     }
 }

@@ -11,7 +11,6 @@
 
 namespace Eddmash\PhpGis\Gdal;
 
-
 use Eddmash\PhpGis\Gdal\Exceptions\GdalException;
 use Eddmash\PhpGis\Gdal\OgrFields\Field;
 use Eddmash\PhpGis\Gdal\OgrGeometry\OgrGeometry;

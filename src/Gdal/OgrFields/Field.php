@@ -11,7 +11,6 @@
 
 namespace Eddmash\PhpGis\Gdal\OgrFields;
 
-
 use Eddmash\PhpGis\Gdal\Exceptions\GdalException;
 use Eddmash\PhpGis\Gdal\Wrapper\Gdal;
 
@@ -58,7 +57,6 @@ class Field
 
     private static function getTypeFieldClass($index, $type, $fieldDefnPtr, $featurePtr)
     {
-
         switch ($type) {
             case OFTInteger:
                 $instance = new OFTInteger($index, $fieldDefnPtr, $featurePtr);

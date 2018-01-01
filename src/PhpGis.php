@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the ziamis package.
+ * This file is part of the phpgis package.
  *
  * (c) Eddilbert Macharia (http://eddmash.com)<edd.cowan@gmail.com>
  *
@@ -10,7 +10,6 @@
 
 namespace Eddmash\PhpGis;
 
-use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 use Eddmash\PhpGis\Db\Types\LineStringType;
 use Eddmash\PhpGis\Db\Types\MultiLineStringType;
@@ -18,77 +17,133 @@ use Eddmash\PhpGis\Db\Types\MultiPointType;
 use Eddmash\PhpGis\Db\Types\MultiPolygonType;
 use Eddmash\PhpGis\Db\Types\PointType;
 use Eddmash\PhpGis\Db\Types\PolygonType;
-use Eddmash\PhpGis\Gdal\Commands\ConsoleApplication;
+use Eddmash\PhpGis\Commands\InspectCommand;
+use Eddmash\PowerOrm\BaseOrm;
+use Eddmash\PowerOrm\Components\Component;
 
-class PhpGis
+/**
+ * PhpGis is component of the powerorm.
+ *
+ * To be able to take its full capability its needs to be registered with orm.
+ *
+ * 'components' => [PhpGis::class]
+ *
+ * Class PhpGis
+ * @package Eddmash\PhpGis
+ * @since   1.1.0
+ *
+ * @author  Eddilbert Macharia (http://eddmash.com) <edd.cowan@gmail.com>
+ */
+class PhpGis extends Component
 {
     const VERSION = "1.0.0";
 
-    /**
-     * @var Connection
-     */
-    private static $connection;
+    private $orm;
 
-    /**
-     * $connectionParams = array(
-     * 'dbname' => 'mydb',
-     * 'user' => 'user',
-     * 'password' => 'secret',
-     * 'host' => 'localhost',
-     * 'driver' => 'pdo_mysql',
-     * );
-     * @var array
-     */
-    private $db;
-
-    public function __construct($configs)
+    public function __construct()
     {
-        foreach ($configs as $name => $config) :
-            $this->{$name} = $config;
-        endforeach;
-
-        $this->init();
     }
 
-    public function consoleRunner()
+    /**
+     * @return \Eddmash\PowerOrm\Db\ConnectionInterface
+     * @throws \Eddmash\PowerOrm\Exception\OrmException
+     */
+    public static function getConnection()
     {
-        ConsoleApplication::run();
-    }
-
-    public function webRunner()
-    {
+        return BaseOrm::getDbConnection();
     }
 
     /**
      * @throws \Doctrine\DBAL\DBALException
-     * @since 1.1.0
+     * @since  1.1.0
      *
      * @author Eddilbert Macharia (http://eddmash.com) <edd.cowan@gmail.com>
+     * @throws \Eddmash\PowerOrm\Exception\OrmException
      */
-    private function init()
+    public function ready(BaseOrm $baseOrm)
     {
-
-        if (!self::$connection) :
-
-            $config = new \Doctrine\DBAL\Configuration();
-
-            $this->db["wrapperClass"] = \Eddmash\PhpGis\Db\Connection::class;
-            self::$connection = \Doctrine\DBAL\DriverManager::getConnection($this->db, $config);
-        endif;
-
-        Type::addType("point", PointType::class);
-        Type::addType("multipoint", MultiPointType::class);
-        Type::addType("linestring", LineStringType::class);
-        Type::addType("multilinestring", MultiLineStringType::class);
-        Type::addType("polygon", PolygonType::class);
-        Type::addType("multipolygon", MultiPolygonType::class);
+        $this->registerDbalTypes($baseOrm);
+        $this->orm = $baseOrm;
     }
 
     /**
-     * @return Connection
+     * @inheritDoc
      */
-    public static function getConnection()
+    public function getName()
     {
-        return self::$connection;
+        return "gis";
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getCommands()
+    {
+        return [
+            InspectCommand::class,
+        ];
+    }
+
+    /**
+     * @param BaseOrm $baseOrm
+     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Eddmash\PowerOrm\Exception\OrmException
+     * @since  1.1.0
+     *
+     * @author Eddilbert Macharia (http://eddmash.com) <edd.cowan@gmail.com>
+     */
+    private function registerDbalTypes(BaseOrm $baseOrm)
+    {
+        $this->registerDoctrineTypeMapping(
+            "POINT",
+            PointType::class
+        );
+        $this->registerDoctrineTypeMapping(
+            "multipoint",
+            MultiPointType::class
+        );
+        $this->registerDoctrineTypeMapping(
+            "linestring",
+            LineStringType::class
+        );
+        $this->registerDoctrineTypeMapping(
+            "multilinestring",
+            MultiLineStringType::class
+        );
+        $this->registerDoctrineTypeMapping(
+            "polygon",
+            PolygonType::class
+        );
+        $this->registerDoctrineTypeMapping(
+            "multipolygon",
+            MultiPolygonType::class
+        );
+    }
+
+
+    /**
+     * @param BaseOrm $baseOrm
+     * @param         $dbType
+     * @param         $doctrineType
+     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Eddmash\PowerOrm\Exception\OrmException
+     * @since  1.1.0
+     *
+     * @author Eddilbert Macharia (http://eddmash.com) <edd.cowan@gmail.com>
+     */
+    private function registerDoctrineTypeMapping(
+        $doctrineType,
+        $typeClass
+    ) {
+        Type::addType(strtoupper($doctrineType), $typeClass);
+    }
+
+
+    /**
+     * @return mixed
+     */
+    public function getOrm()
+    {
+        return $this->orm;
     }
 }

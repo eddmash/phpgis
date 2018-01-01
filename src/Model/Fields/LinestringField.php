@@ -1,6 +1,7 @@
 <?php
+
 /**
- * This file is part of the phpgis package.
+ * This file is part of the powercomponents package.
  *
  * (c) Eddilbert Macharia (http://eddmash.com)<edd.cowan@gmail.com>
  *
@@ -8,9 +9,8 @@
  * file that was distributed with this source code.
  */
 
+namespace Eddmash\PhpGis\Model\Fields;
 
-namespace Eddmash\PhpGis\Gdal\OgrFields;
-
-class OFTBinary extends Field
+class LinestringField extends GeometryField
 {
 }

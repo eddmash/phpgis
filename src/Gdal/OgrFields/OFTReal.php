@@ -11,12 +11,10 @@
 
 namespace Eddmash\PhpGis\Gdal\OgrFields;
 
-
 class OFTReal extends Field
 {
     public function getValue()
     {
         return $this->asDouble();
     }
-
 }

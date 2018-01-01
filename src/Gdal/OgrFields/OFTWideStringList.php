@@ -11,8 +11,6 @@
 
 namespace Eddmash\PhpGis\Gdal\OgrFields;
 
-
 class OFTWideStringList extends Field
 {
-
 }

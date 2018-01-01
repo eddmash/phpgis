@@ -11,7 +11,6 @@
 
 namespace Eddmash\PhpGis\Db\Backends\Features;
 
-
 class Postgis extends BaseFeatures
 {
     protected $supports3dFunctions = true;
