@@ -15,7 +15,7 @@ use Eddmash\PhpGis\Gdal\Exceptions\GdalException;
 use Eddmash\PhpGis\Gdal\Wrapper\Gdal;
 
 /**
- * Class Field
+ * Class OgrField
  *
  * The attributes provide additional meta-information about the feature.
  *
@@ -25,14 +25,14 @@ use Eddmash\PhpGis\Gdal\Wrapper\Gdal;
  * @package Eddmash\PhpGis\Gdal\OgrFields
  * @author: Eddilbert Macharia (http://eddmash.com)<edd.cowan@gmail.com>
  */
-class Field
+class OgrField
 {
     public $_ptr;
     private $index;
     private $featurePtr;
 
     /**
-     * Field constructor.
+     * OgrField constructor.
      * @param $fieldDefnPtr
      * @param $featurePtr
      * @throws GdalException
@@ -40,7 +40,7 @@ class Field
     public function __construct($index, $fieldDefnPtr, $featurePtr)
     {
         if (!$fieldDefnPtr):
-            throw new GdalException('Cannot create OGR Field, invalid pointer given.');
+            throw new GdalException('Cannot create OGR OgrField, invalid pointer given.');
         endif;
 
         $this->index = $index;
@@ -101,7 +101,7 @@ class Field
                 $instance = new OFTInteger64List($index, $fieldDefnPtr, $featurePtr);
                 break;
             default:
-                $instance = new Field($index, $fieldDefnPtr, $featurePtr);
+                $instance = new OgrField($index, $fieldDefnPtr, $featurePtr);
         }
 
         return $instance;

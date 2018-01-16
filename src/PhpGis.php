@@ -11,15 +11,19 @@
 namespace Eddmash\PhpGis;
 
 use Doctrine\DBAL\Types\Type;
+use Eddmash\PhpGis\Commands\InspectCommand;
+use Eddmash\PhpGis\Db\Backends\Features\BaseFeatures;
+use Eddmash\PhpGis\Db\Backends\Operations\BaseOperations;
+use Eddmash\PhpGis\Db\ConnectionHandle;
 use Eddmash\PhpGis\Db\Types\LineStringType;
 use Eddmash\PhpGis\Db\Types\MultiLineStringType;
 use Eddmash\PhpGis\Db\Types\MultiPointType;
 use Eddmash\PhpGis\Db\Types\MultiPolygonType;
 use Eddmash\PhpGis\Db\Types\PointType;
 use Eddmash\PhpGis\Db\Types\PolygonType;
-use Eddmash\PhpGis\Commands\InspectCommand;
 use Eddmash\PowerOrm\BaseOrm;
-use Eddmash\PowerOrm\Components\Component;
+use Eddmash\PowerOrm\Components\Application;
+use Eddmash\PowerOrm\Db\Connection;
 
 /**
  * PhpGis is component of the powerorm.
@@ -34,9 +38,10 @@ use Eddmash\PowerOrm\Components\Component;
  *
  * @author  Eddilbert Macharia (http://eddmash.com) <edd.cowan@gmail.com>
  */
-class PhpGis extends Component
+class PhpGis extends Application
 {
     const VERSION = "1.0.0";
+    const NAME = 'eddmash_phpgis';
 
     private $orm;
 
@@ -45,13 +50,14 @@ class PhpGis extends Component
     }
 
     /**
-     * @return \Eddmash\PowerOrm\Db\ConnectionInterface
+     * @return ConnectionHandle|\Eddmash\PowerOrm\Db\ConnectionInterface
      * @throws \Eddmash\PowerOrm\Exception\OrmException
      */
     public static function getConnection()
     {
-        return BaseOrm::getDbConnection();
+        return new ConnectionHandle(BaseOrm::getDbConnection());
     }
+
 
     /**
      * @throws \Doctrine\DBAL\DBALException
@@ -71,7 +77,7 @@ class PhpGis extends Component
      */
     public function getName()
     {
-        return "gis";
+        return static::NAME;
     }
 
     /**
@@ -83,6 +89,7 @@ class PhpGis extends Component
             InspectCommand::class,
         ];
     }
+
 
     /**
      * @param BaseOrm $baseOrm

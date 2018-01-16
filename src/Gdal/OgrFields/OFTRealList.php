@@ -11,6 +11,6 @@
 
 namespace Eddmash\PhpGis\Gdal\OgrFields;
 
-class OFTRealList extends Field
+class OFTRealList extends OgrField
 {
 }

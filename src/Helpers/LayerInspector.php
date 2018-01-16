@@ -9,29 +9,26 @@
  */
 
 
-namespace Eddmash\PhpGis\Tools;
+namespace Eddmash\PhpGis\Helpers;
 
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Schema\Schema;
-use Doctrine\DBAL\Schema\Table;
 use Eddmash\PhpGis\Gdal\DataSource;
 use Eddmash\PhpGis\Gdal\Layer;
-use Eddmash\PhpGis\Gdal\OgrFields\Field;
+use Eddmash\PhpGis\Gdal\OgrFields\OgrField;
 use Eddmash\PhpGis\Gdal\OgrFields\OFTDate;
 use Eddmash\PhpGis\Gdal\OgrFields\OFTDateTime;
 use Eddmash\PhpGis\Gdal\OgrFields\OFTInteger;
 use Eddmash\PhpGis\Gdal\OgrFields\OFTInteger64;
 use Eddmash\PhpGis\Gdal\OgrFields\OFTReal;
-use Eddmash\PhpGis\Gdal\OgrFields\OFTString;
 use Eddmash\PhpGis\Gdal\OgrFields\OFTTime;
 use Eddmash\PhpGis\Model\Model;
-use Eddmash\PowerOrm\Db\ConnectionInterface;
 use Eddmash\PowerOrm\Form\Fields\CharField;
 use Eddmash\PowerOrm\Form\Fields\DateField;
 use Eddmash\PowerOrm\Form\Fields\DecimalField;
 use Eddmash\PowerOrm\Form\Fields\IntegerField;
 use Eddmash\PowerOrm\Form\Fields\TimeField;
+use Eddmash\PowerOrm\Helpers\Tools;
 use Eddmash\PowerOrm\Migration\FormatFileContent;
+use Eddmash\PowerOrm\Model\Field\BigIntegerField;
 use Eddmash\PowerOrm\Model\Field\DateTimeField;
 
 class LayerInspector
@@ -46,6 +43,7 @@ class LayerInspector
     private $modelname;
 
     private $layerPos;
+    private $mapping;
 
     public function __construct(DataSource $ds, $modelname)
     {
@@ -68,40 +66,42 @@ class LayerInspector
             2
         );
 
+        $this->mapping[$name] = strtoupper($layer->getGeomType()->getName());
         return sprintf("'%s' => Model::%s(%s)", $name, $field, $args);
     }
 
-    private function addField(Field $field)
+    private function addField(OgrField $field)
     {
         $name = strtolower($field->getName());
+        $this->mapping[$name] = $field->getName();
         $args = '';
         switch (true):
             case $field instanceof OFTInteger64:
+                $modelField = BigIntegerField::class;
+                break;
+            case $field instanceof OFTInteger:
                 $modelField = IntegerField::class;
-        break;
-        case $field instanceof OFTInteger:
-                $modelField = IntegerField::class;
-        break;
-        case $field instanceof OFTDate:
+                break;
+            case $field instanceof OFTDate:
                 $modelField = DateField::class;
-        break;
-        case $field instanceof OFTDateTime:
+                break;
+            case $field instanceof OFTDateTime:
                 $modelField = DateTimeField::class;
-        break;
-        case $field instanceof OFTTime:
+                break;
+            case $field instanceof OFTTime:
                 $modelField = TimeField::class;
-        break;
-        case $field instanceof OFTReal:
+                break;
+            case $field instanceof OFTReal:
                 $modelField = DecimalField::class;
-        $args = sprintf(
+                $args = sprintf(
                     "['maxDigits'=>%s, 'decimalPlaces'=>%s]",
                     $field->getWidth(),
                     $field->getPrecision()
                 );
-        break;
-        default:
+                break;
+            default:
                 $modelField = CharField::class;
-        $args = sprintf("['maxLength'=>%s]", $field->getWidth());
+                $args = sprintf("['maxLength'=>%s]", $field->getWidth());
         endswitch;
 
         return sprintf(
@@ -116,7 +116,7 @@ class LayerInspector
      * @param $layerIndex
      * @throws \Eddmash\PhpGis\Gdal\Exceptions\GdalException
      */
-    public function dump($layerIndex)
+    public function getModel($layerIndex)
     {
         $content = FormatFileContent::createObject();
         $content->addItem('<?php');
@@ -145,7 +145,7 @@ class LayerInspector
 
         foreach (range(0, $layer->getFieldCount() - 1) as $index) :
             $field = $layer->getField($index);
-        $content->addItem($this->addField($field).", ");
+            $content->addItem($this->addField($field).", ");
         endforeach;
         $content->addItem($this->addGeometryField($layer));
         $content->reduceIndent();
@@ -157,5 +157,23 @@ class LayerInspector
         $content->addItem("}");
 
         return $content->toString();
+    }
+
+    public function getMappingAssoc()
+    {
+        return Tools::stringify(
+            $this->mapping,
+            0,
+            0,
+            true
+        );
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMapping()
+    {
+        return $this->mapping;
     }
 }

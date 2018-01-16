@@ -11,6 +11,6 @@
 
 namespace Eddmash\PhpGis\Gdal\OgrFields;
 
-class OFTWideString extends Field
+class OFTWideString extends OgrField
 {
 }

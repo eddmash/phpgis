@@ -10,7 +10,7 @@
  */
 namespace Eddmash\PhpGis\Model;
 
-class Model extends \Eddmash\PowerOrm\Model\Model
+abstract class Model extends \Eddmash\PowerOrm\Model\Model
 {
     use ModelFieldsTrait;
 }

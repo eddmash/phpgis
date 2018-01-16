@@ -11,10 +11,8 @@
 
 namespace Eddmash\PhpGis\Commands;
 
-use Eddmash\PhpGis\Db\Database;
 use Eddmash\PhpGis\Gdal\DataSource;
-use Eddmash\PhpGis\PhpGis;
-use Eddmash\PhpGis\Tools\LayerInspector;
+use Eddmash\PhpGis\Helpers\LayerInspector;
 use Eddmash\PowerOrm\Helpers\FileHandler;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -47,6 +45,12 @@ class InspectCommand extends Command
                 null,
                 InputOption::VALUE_NONE,
                 "Write this class to file"
+            )->addOption(
+                "mapping",
+                null,
+                InputOption::VALUE_NONE,
+                "Tells inspect to also generate a mapping".
+                " dictionary for use with LayerMapping."
             );
     }
 
@@ -60,7 +64,7 @@ class InspectCommand extends Command
         try {
             $importer = new LayerInspector($ds, ucfirst($modelname));
             // this is because shapefiles only have one layer
-            $content = $importer->dump(0);
+            $content = $importer->getModel(0);
 
             if ($write):
 
@@ -70,9 +74,15 @@ class InspectCommand extends Command
                     ucfirst($modelname).".php"
                 );
 
-            $handler->write($content); else:
+                $handler->write($content);
+            else:
                 $output->writeln($content);
-            endif;
+
+                if ($input->getOption('mapping')):
+                    $output->writeln("-- <fg=yellow>Mapping Info</>");
+                    $output->writeln($importer->getMappingAssoc());
+                endif;
+        endif;
         } catch (\Exception $e) {
             $output->writeln($e->getMessage());
         }

@@ -157,7 +157,7 @@ class Gdal
         );
     }
 
-    // ================================= Field ==================================
+    // ================================= OgrField ==================================
 
     public static function getFieldName($fieldDefnHandle)
     {
@@ -291,5 +291,16 @@ class Gdal
     public static function OSRClone($srsPtr)
     {
         return OSRClone($srsPtr);
+    }
+
+    // ================================= COORDINATE  =========================
+
+    public static function CoordinateTransform($sourceSrsPtr, $targetSrsPtr)
+    {
+        return OCTNewCoordinateTransformation($sourceSrsPtr, $targetSrsPtr);
+    }
+    public static function DestroyCoordinateTransform($coordinatrTransformPtr)
+    {
+        return OCTDestroyCoordinateTransformation($coordinatrTransformPtr);
     }
 }

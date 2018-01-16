@@ -57,14 +57,147 @@ class BaseFeatures
     /**
      * @param AbstractPlatform $platform
      * @return BaseFeatures
-     * @since 1.1.0
+     * @since  1.1.0
      *
      * @author Eddilbert Macharia (http://eddmash.com) <edd.cowan@gmail.com>
      */
     public static function getFeatures(AbstractPlatform $platform)
     {
-        $name = sprintf("Eddmash\PhpGis\Db\Backends\Features\%s", ucfirst($platform->getName()));
+        $name = sprintf(
+            "Eddmash\PhpGis\Db\Backends\Features\%s",
+            ucfirst($platform->getName())
+        );
 
         return new $name();
     }
+
+    /**
+     * @return bool
+     */
+    public function isGisEnabled()
+    {
+        return $this->gisEnabled;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isHasSpatialrefsysTable()
+    {
+        return $this->hasSpatialrefsysTable;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSupportsAddSrsEntry()
+    {
+        return $this->supportsAddSrsEntry;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSupportsGeometryFieldIntrospection()
+    {
+        return $this->supportsGeometryFieldIntrospection;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSupports3dStorage()
+    {
+        return $this->supports3dStorage;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSupports3dFunctions()
+    {
+        return $this->supports3dFunctions;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSupportsTransform()
+    {
+        return $this->supportsTransform;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSupportsRealShapeOperations()
+    {
+        return $this->supportsRealShapeOperations;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSupportsNullGeometries()
+    {
+        return $this->supportsNullGeometries;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSupportsDistanceGeodetic()
+    {
+        return $this->supportsDistanceGeodetic;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSupportsLengthGeodetic()
+    {
+        return $this->supportsLengthGeodetic;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSupportsNumPointsPoly()
+    {
+        return $this->supportsNumPointsPoly;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSupportsDistancesLookups()
+    {
+        return $this->supportsDistancesLookups;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSupportsLeftRightLookups()
+    {
+        return $this->supportsLeftRightLookups;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSupportsRaster()
+    {
+        return $this->supportsRaster;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSupportsGeometryFieldUniqueIndex()
+    {
+        return $this->supportsGeometryFieldUniqueIndex;
+    }
+
+
 }

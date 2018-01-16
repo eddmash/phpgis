@@ -12,7 +12,7 @@
 namespace Eddmash\PhpGis\Gdal;
 
 use Eddmash\PhpGis\Gdal\Exceptions\GdalException;
-use Eddmash\PhpGis\Gdal\OgrFields\Field;
+use Eddmash\PhpGis\Gdal\OgrFields\OgrField;
 use Eddmash\PhpGis\Gdal\OgrGeometry\OgrGeometry;
 use Eddmash\PhpGis\Gdal\Wrapper\Gdal;
 
@@ -95,7 +95,7 @@ class Feature implements \Iterator
 
     /**
      * @param $fieldId
-     * @return Field
+     * @return OgrField
      * @since 1.1.0
      *
      * @author Eddilbert Macharia (http://eddmash.com) <edd.cowan@gmail.com>
@@ -120,7 +120,7 @@ class Feature implements \Iterator
 
     private function makeField($index)
     {
-        return Field::getInstance($index, Gdal::getDefnFieldDefn($this->_dfnPtr, $index), $this->_ptr);
+        return OgrField::getInstance($index, Gdal::getDefnFieldDefn($this->_dfnPtr, $index), $this->_ptr);
     }
 
     // ======================= ITERATE ================
@@ -128,7 +128,7 @@ class Feature implements \Iterator
     /**
      * Return the current element
      * @link http://php.net/manual/en/iterator.current.php
-     * @return Field.
+     * @return OgrField.
      * @since 5.0.0
      */
     public function current()

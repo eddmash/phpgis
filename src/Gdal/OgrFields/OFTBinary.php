@@ -11,6 +11,6 @@
 
 namespace Eddmash\PhpGis\Gdal\OgrFields;
 
-class OFTBinary extends Field
+class OFTBinary extends OgrField
 {
 }

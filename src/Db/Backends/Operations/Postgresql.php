@@ -13,6 +13,8 @@ namespace Eddmash\PhpGis\Db\Backends\Operations;
 
 use Eddmash\PhpGis\Db\Types\SpatialType;
 use Eddmash\PhpGis\Exceptions\NotImplementedError;
+use Eddmash\PhpGis\Model\Fields\SpatialField;
+use Eddmash\PhpGis\Models\PostGISSpatialRefSys;
 
 class Postgresql extends BaseOperations
 {
@@ -45,5 +47,25 @@ class Postgresql extends BaseOperations
         return sprintf('geography(%s,%d)', $geom, $srid);
         endif;
         return sprintf('geometry(%s,%d)', $geom, $srid);
+    }
+
+    public function convertToDatabaseValueSQL(SpatialType $spatialType, $sqlExpr)
+    {
+        // TODO: Implement convertToDatabaseValueSQL() method.
+    }
+
+    public function convertToPHPValueSQL(SpatialType $spatialType, $sqlExpr)
+    {
+        // TODO: Implement convertToPHPValueSQL() method.
+    }
+
+    public function getDbType(SpatialField $field)
+    {
+        // TODO: Implement getDbType() method.
+    }
+
+    function getSpatialRefModelClass()
+    {
+        return PostGISSpatialRefSys::class;
     }
 }

@@ -11,6 +11,6 @@
 
 namespace Eddmash\PhpGis\Gdal\OgrFields;
 
-class OFTInteger64List extends Field
+class OFTInteger64List extends OgrField
 {
 }

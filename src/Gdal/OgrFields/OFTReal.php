@@ -11,7 +11,7 @@
 
 namespace Eddmash\PhpGis\Gdal\OgrFields;
 
-class OFTReal extends Field
+class OFTReal extends OgrField
 {
     public function getValue()
     {

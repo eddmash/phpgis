@@ -25,4 +25,22 @@ class GeometryField extends SpatialField
         endif;
         return $kwargs;
     }
+
+    /**
+     * @return bool
+     */
+    public function isGeography()
+    {
+        return $this->geography;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDim()
+    {
+        return $this->dim;
+    }
+
+
 }

@@ -12,7 +12,7 @@
 namespace Eddmash\PhpGis\Gdal;
 
 use Eddmash\PhpGis\Gdal\Exceptions\GdalException;
-use Eddmash\PhpGis\Gdal\OgrFields\Field;
+use Eddmash\PhpGis\Gdal\OgrFields\OgrField;
 use Eddmash\PhpGis\Gdal\Wrapper\Gdal;
 
 /**
@@ -26,7 +26,7 @@ use Eddmash\PhpGis\Gdal\Wrapper\Gdal;
  * Other data sources may consist of just one layer. Each layer has a spatial reference and a list of features.
  *
  * @package Eddmash\PhpGis\Gdal
- * @author: Eddilbert Macharia (http://eddmash.com)<edd.cowan@gmail.com>
+ * @author  : Eddilbert Macharia (http://eddmash.com)<edd.cowan@gmail.com>
  */
 class Layer implements \Iterator
 {
@@ -42,7 +42,7 @@ class Layer implements \Iterator
      * @param $layerPtr
      * @param $datasourcePtr
      * @return static
-     * @since 1.1.0
+     * @since  1.1.0
      *
      * @author Eddilbert Macharia (http://eddmash.com) <edd.cowan@gmail.com>
      */
@@ -68,6 +68,17 @@ class Layer implements \Iterator
         $this->canRandomAccess = $this->testCapability(Gdal::OLCRandomRead);
     }
 
+
+    public function getFields()
+    {
+        $fields = [];
+        foreach ($this->getFieldCount() as $idx) :
+            $fields[] = $this->getField($idx);
+        endforeach;
+
+        return $fields;
+    }
+
     public function getFieldCount()
     {
         return Gdal::getDefnFieldCount($this->_dfnPtr);
@@ -77,7 +88,7 @@ class Layer implements \Iterator
      * @param $id
      * @return OgrFields\OFTInteger|OgrFields\OFTIntegerList|OgrFields\OFTReal|OgrFields\OFTRealList|OgrFields\OFTString|OgrFields\OFTStringList|OgrFields\OFTWideString|null
      * @throws GdalException
-     * @since 1.1.0
+     * @since  1.1.0
      *
      * @author Eddilbert Macharia (http://eddmash.com) <edd.cowan@gmail.com>
      */
@@ -86,17 +97,31 @@ class Layer implements \Iterator
         $field = null;
         if (is_numeric($id)) :
             $handle = Gdal::getDefnFieldDefn($this->_dfnPtr, $id);
-        if (!$handle):
-                throw new GdalException(sprintf("Field at position '%s' Does not exist in the shapefile", $id));
-        endif;
-        $field = Field::getInstance($id, $handle, $this->_ptr);
+            if (!$handle):
+                throw new GdalException(
+                    sprintf(
+                        "OgrField at position '%s' Does not exist in the shapefile",
+                        $id
+                    )
+                );
+            endif;
+            $field = OgrField::getInstance($id, $handle, $this->_ptr);
         endif;
         if (is_string($id)) :
             $index = Gdal::getDefnFieldIndexByName($this->_dfnPtr, $id);
-        if ($index == -1):
-                throw new GdalException(sprintf("Field with then name '%s' Does not exist in the shapefile", $id));
-        endif;
-        $field = Field::getInstance($index, Gdal::getDefnFieldDefn($this->_dfnPtr, $index), $this->_ptr);
+            if ($index == -1):
+                throw new GdalException(
+                    sprintf(
+                        "OgrField with then name '%s' Does not exist in the shapefile",
+                        $id
+                    )
+                );
+            endif;
+            $field = OgrField::getInstance(
+                $index,
+                Gdal::getDefnFieldDefn($this->_dfnPtr, $index),
+                $this->_ptr
+            );
         endif;
 
         return $field;
@@ -107,7 +132,9 @@ class Layer implements \Iterator
      */
     public function getGeomType()
     {
-        return new OgrGeometryType(Gdal::getGeomTypeFromFeatureDefn($this->_dfnPtr));
+        return new OgrGeometryType(
+            Gdal::getGeomTypeFromFeatureDefn($this->_dfnPtr)
+        );
     }
 
     public function getFeatureCount()
@@ -119,7 +146,7 @@ class Layer implements \Iterator
      * @param $fid
      * @return Feature|static
      * @throws GdalException
-     * @since 1.1.0
+     * @since  1.1.0
      *
      * @author Eddilbert Macharia (http://eddmash.com) <edd.cowan@gmail.com>
      */
@@ -129,8 +156,8 @@ class Layer implements \Iterator
     }
 
     /**
-     * @return SpatialReference
-     * @since 1.1.0
+     * @return SpatialReferenceInterface
+     * @since  1.1.0
      *
      * @author Eddilbert Macharia (http://eddmash.com) <edd.cowan@gmail.com>
      */
@@ -158,19 +185,23 @@ class Layer implements \Iterator
      * @param $index
      * @return Feature|static
      * @throws GdalException
-     * @since 1.1.0
+     * @since  1.1.0
      *
      * @author Eddilbert Macharia (http://eddmash.com) <edd.cowan@gmail.com>
      */
     private function makeFeature($index)
     {
         if ($this->canRandomAccess):
-            return Feature::getInstance(Gdal::getLayerFeature($this->_ptr, $index), $this->_ptr); else:
+            return Feature::getInstance(
+                Gdal::getLayerFeature($this->_ptr, $index),
+                $this->_ptr
+            );
+        else:
             foreach ($this as $feature) :
                 if ($feature->getFeatureID() == $index):
                     return $feature;
-        endif;
-        endforeach;
+                endif;
+            endforeach;
         endif;
         throw new GdalException(sprintf("Invalid feature id %s ", $index));
     }
@@ -180,7 +211,7 @@ class Layer implements \Iterator
 
     /**
      * Return the current element
-     * @link http://php.net/manual/en/iterator.current.php
+     * @link  http://php.net/manual/en/iterator.current.php
      * @return Feature.
      * @since 5.0.0
      */
@@ -191,7 +222,7 @@ class Layer implements \Iterator
 
     /**
      * Move forward to next element
-     * @link http://php.net/manual/en/iterator.next.php
+     * @link  http://php.net/manual/en/iterator.next.php
      * @return void Any returned value is ignored.
      * @since 5.0.0
      */
@@ -202,7 +233,7 @@ class Layer implements \Iterator
 
     /**
      * Return the key of the current element
-     * @link http://php.net/manual/en/iterator.key.php
+     * @link  http://php.net/manual/en/iterator.key.php
      * @return mixed scalar on success, or null on failure.
      * @since 5.0.0
      */
@@ -213,7 +244,7 @@ class Layer implements \Iterator
 
     /**
      * Checks if current position is valid
-     * @link http://php.net/manual/en/iterator.valid.php
+     * @link  http://php.net/manual/en/iterator.valid.php
      * @return boolean The return value will be casted to boolean and then evaluated.
      * Returns true on success or false on failure.
      * @since 5.0.0
@@ -225,7 +256,7 @@ class Layer implements \Iterator
 
     /**
      * Rewind the Iterator to the first element
-     * @link http://php.net/manual/en/iterator.rewind.php
+     * @link  http://php.net/manual/en/iterator.rewind.php
      * @return void Any returned value is ignored.
      * @since 5.0.0
      */

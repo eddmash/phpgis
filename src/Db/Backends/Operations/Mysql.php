@@ -69,4 +69,9 @@ class Mysql extends BaseOperations
     {
         return sprintf('GeomFromText("%s")', $sqlExpr);
     }
+
+    function getSpatialRefModelClass()
+    {
+        throw new NotImplementedError("mysql does not support");
+    }
 }

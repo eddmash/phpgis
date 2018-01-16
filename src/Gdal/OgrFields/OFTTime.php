@@ -11,6 +11,6 @@
 
 namespace Eddmash\PhpGis\Gdal\OgrFields;
 
-class OFTTime extends Field
+class OFTTime extends OgrField
 {
 }

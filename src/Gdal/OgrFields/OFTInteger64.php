@@ -11,6 +11,7 @@
 
 namespace Eddmash\PhpGis\Gdal\OgrFields;
 
-class OFTInteger64 extends Field
+class OFTInteger64 extends OFTInteger
 {
+    public $bit64 = true;
 }

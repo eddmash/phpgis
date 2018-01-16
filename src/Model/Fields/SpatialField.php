@@ -12,6 +12,7 @@
 namespace Eddmash\PhpGis\Model\Fields;
 
 use Eddmash\PhpGis\Db\Backends\Operations\BaseOperations;
+use Eddmash\PhpGis\Exceptions\NotImplementedError;
 use Eddmash\PowerOrm\Db\ConnectionInterface;
 use Eddmash\PowerOrm\Helpers\StringHelper;
 use Eddmash\PowerOrm\Model\Field\Field;
@@ -41,7 +42,7 @@ abstract class SpatialField extends Field
 
         if (StringHelper::startsWith(static::class, 'Eddmash\PhpGis\Model\Fields')):
             $path = 'Eddmash\PhpGis\Model\Model as GisModel';
-        $name = sprintf('GisModel::%s', $this->getShortClassName());
+            $name = sprintf('GisModel::%s', $this->getShortClassName());
         endif;
 
         return [
@@ -65,5 +66,13 @@ abstract class SpatialField extends Field
     public function getGeomType()
     {
         return $this->geomType;
+    }
+
+
+    public function getSrid()
+    {
+        throw new NotImplementedError(
+            'srid'
+        );
     }
 }

@@ -19,9 +19,9 @@ use Eddmash\PhpGis\Gdal\Wrapper\Gdal;
  * The spatial reference specifies the projection and datum used by the layer's data.
  *
  * @package Eddmash\PhpGis\Gdal
- * @author: Eddilbert Macharia (http://eddmash.com)<edd.cowan@gmail.com>
+ * @author  : Eddilbert Macharia (http://eddmash.com)<edd.cowan@gmail.com>
  */
-class SpatialReference
+class SpatialReference implements SpatialReferenceInterface
 {
     private $_ptr;
 
@@ -32,6 +32,19 @@ class SpatialReference
     public function __construct($inputType)
     {
         $this->_ptr = $inputType;
+    }
+
+    public function getName()
+    {
+        if ($this->isProjected()):
+            return $this->getAttralue('PROJCS');
+        elseif ($this->isGeographic()):
+            return $this->getAttralue('GEOGCS');
+        elseif ($this->isLocal()):
+            return $this->getAttralue('LOCAL_CS');
+        else:
+            return null;
+        endif;
     }
 
     public function getAuthorityCode($key)
@@ -64,7 +77,7 @@ class SpatialReference
         return Gdal::OSRIsLocal($this->_ptr);
     }
 
-    public function isSame(SpatialReference $spatialReference)
+    public function isSame(SpatialReferenceInterface $spatialReference)
     {
         return OSRIsSame($this->_ptr, $spatialReference->getPointer());
     }
@@ -75,7 +88,7 @@ class SpatialReference
     }
 
     /**
-     * @since 1.1.0
+     * @since  1.1.0
      * @return string
      * @author Eddilbert Macharia (http://eddmash.com) <edd.cowan@gmail.com>
      */
@@ -85,7 +98,7 @@ class SpatialReference
     }
 
     /**
-     * @since 1.1.0
+     * @since  1.1.0
      * @return string
      * @author Eddilbert Macharia (http://eddmash.com) <edd.cowan@gmail.com>
      */
@@ -106,14 +119,14 @@ class SpatialReference
     }
 
 
-    protected function getPointer()
+    public function getPointer()
     {
         return $this->_ptr;
     }
 
     /**
      * @return int
-     * @since 1.1.0
+     * @since  1.1.0
      *
      * @author Eddilbert Macharia (http://eddmash.com) <edd.cowan@gmail.com>
      */
